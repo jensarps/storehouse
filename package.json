@@ -1,0 +1,20 @@
+{
+  "name": "storehouse",
+  "description": "A persistent data store implementing the dojo/store API",
+  "licenses": [
+     {
+         "type": "AFLv2.1",
+         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
+     },
+     {
+         "type": "BSD",
+         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
+     }
+  ],
+  "keywords": ["Storage"],
+  "dependencies": {
+    "dojo": "1.7.0"
+  },
+  "main": "./Storehouse",
+  "icon": "http://dojofoundation.org/images/icons/5.png"
+}

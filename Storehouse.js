@@ -153,7 +153,6 @@ define([
       // 	summary:
       //		Loads available data from storage backend.
       this.data = this.engine.getAll();
-      console.log(this.data);
       this._indexData();
     },
 

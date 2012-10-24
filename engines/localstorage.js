@@ -1,4 +1,4 @@
-define([], function () {
+define(['dojo/json'], function (JSON) {
   var engine = {
 
     storeId: '',

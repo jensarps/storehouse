@@ -8,10 +8,6 @@ define(['dojo/json'], function (JSON) {
 
     storeId: '',
 
-    get: function (id) {
-      return JSON.parse(localStorage.getItem(this.prefixId(id)));
-    },
-
     put: function (id, object) {
       localStorage.setItem(this.prefixId(id), JSON.stringify(object));
     },

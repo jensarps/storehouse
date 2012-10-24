@@ -19,9 +19,6 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
       this.readStoreFromCookie();
     },
 
-    get: function (key) {
-    },
-
     put: function (key, value) {
       this._store[key] = value;
       this.updateCookie();

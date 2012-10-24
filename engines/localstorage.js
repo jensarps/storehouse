@@ -23,7 +23,9 @@ define([], function () {
       var data = [], i = 0, m = localStorage.length, key;
       for (; i < m; i++) {
         key = localStorage.key(i);
-        data.push(JSON.parse(localStorage.getItem(key)));
+        if(this.hasPrefix(key)){
+          data.push(JSON.parse(localStorage.getItem(key)));
+        }
       }
       return data;
     },

@@ -1,5 +1,10 @@
 define(['dojo/json'], function (JSON) {
-  var engine = {
+
+  var engine = function (storeId) {
+    this.storeId = storeId;
+  };
+
+  engine.prototype = {
 
     storeId: '',
 
@@ -44,5 +49,6 @@ define(['dojo/json'], function (JSON) {
     }
 
   };
+
   return engine;
 });

@@ -30,6 +30,10 @@ define([], function () {
 
     prefixId: function (id) {
       return this.storeId + '-' + id;
+    },
+
+    hasPrefix: function(key){
+      return key.indexOf(this.storeId + '-') === 0;
     }
 
   };

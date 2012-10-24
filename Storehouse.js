@@ -35,6 +35,7 @@ define([
       // Choose backend
       this.engine = this._chooseBackend();
 
+      this.data = [];
       if (options.data) { // Can't rely on this.data here, as Memory fools around w/ it
         this.applyData(options.data);
       } else {

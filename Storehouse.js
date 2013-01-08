@@ -23,7 +23,7 @@ define([
       // options: kwArgs?
       //		This provides any configuration information that will be mixed into the store.
 
-
+      // TODO: Don't mix in everything unchecked
       options = options || {};
       for (var i in options) {
         this[i] = options[i];
@@ -38,16 +38,14 @@ define([
         ];
       }
 
+      // TODO: This is pretty ugly
       this.engines = {
         localstorage: LSEngine,
         sqlite: SqliteEngine,
         cookie: CookieEngine
       };
 
-      // Choose backend
       this._chooseBackend();
-
-
     },
 
     //  storeId: String
@@ -62,6 +60,7 @@ define([
     //    A hashmap of available engines and their names
     engines: null,
 
+    //  _engineIndex: Number
     _engineIndex: 0,
 
     //  enginePrecedence: Array
@@ -110,6 +109,7 @@ define([
         }
         */
 
+        // TODO: This is pretty ugly _and_ needs to wait for the engine to be ready
         inst.data = [];
         if (inst.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
           inst.applyData(inst.options.data);
@@ -120,7 +120,6 @@ define([
             inst.errorHandler && inst.errorHandler(err);
           });
         }
-
 
       }, errHandler);
 
@@ -141,6 +140,7 @@ define([
           idProperty = this.idProperty,
           deferred = new Deferred();
 
+      // TODO: Math.random() is a really bad thing to do as id generator
       var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
 
       var exists = id in index;

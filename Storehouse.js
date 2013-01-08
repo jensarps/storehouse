@@ -88,8 +88,8 @@ define([
           inst = this;
 
       var errHandler = function () {
+        inst._engineIndex++;
         if (inst._engineIndex < inst.enginePrecedence.length) {
-          inst._engineIndex++;
           inst._chooseBackend();
         } else {
           throw new Error('No storage engine available; tried ' + inst.enginePrecedence.join(', ') + '.');

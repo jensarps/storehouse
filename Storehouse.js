@@ -103,20 +103,7 @@ define([
         throw new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.');
       }
 
-      var backend;
-      switch(engine){
-        case 'localstorage':
-          backend = new LSEngine(this.storeId);
-          break;
-        case 'cookie':
-          backend = new CookieEngine(this.storeId);
-          break;
-        default:
-          throw new Error('No engine available for ' + engine + '.');
-          break;
-      }
 
-      return backend;
     },
 
     put: function (object, options) {

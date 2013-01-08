@@ -38,6 +38,12 @@ define([
         ];
       }
 
+      this.engines = {
+        localstorage: LSEngine,
+        sqlite: SqliteEngine,
+        cookie: CookieEngine
+      };
+
       // Choose backend
       this.engine = this._chooseBackend();
 
@@ -61,6 +67,10 @@ define([
     //  engine: Object
     //		A pointer to the backend.
     engine: null,
+
+    //  engines: Object
+    //    A hashmap of available engines and their names
+    engines: null,
 
     //  enginePrecedence: Array
     //    An array of storage engines to be used, preferred engines first

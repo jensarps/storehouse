@@ -33,7 +33,7 @@ define([
       if (Object.prototype.toString.call(this.enginePrecedence) != '[object Array]') {
         this.enginePrecedence = [
           'localstorage',
-          'sqlite',
+          //'sqlite',
           'cookie'
         ];
       }
@@ -45,19 +45,9 @@ define([
       };
 
       // Choose backend
-      this.engine = this._chooseBackend();
+      this._chooseBackend();
 
-      this.data = [];
-      var inst = this;
-      if (options.data) { // Can't rely on this.data here, as Memory fools around w/ it
-        this.applyData(options.data);
-      } else {
-        this._loadData().then(function(){
-          inst.successHandler && inst.successHandler(inst);
-        }, function(err){
-          inst.errorHandler && inst.errorHandler(err);
-        });
-      }
+
     },
 
     //  storeId: String
@@ -71,6 +61,8 @@ define([
     //  engines: Object
     //    A hashmap of available engines and their names
     engines: null,
+
+    _engineIndex: 0,
 
     //  enginePrecedence: Array
     //    An array of storage engines to be used, preferred engines first
@@ -90,19 +82,47 @@ define([
 
     _chooseBackend: function () {
       //  summary:
-      //    Chooses a backend, based on engine precedence.  
-      var engine;
-      for(var i= 0, m=this.enginePrecedence.length; i<m; i++){
-        if(true){ // TODO: check availability
-          engine = this.enginePrecedence[i];
-          break;
+      //    Chooses a backend, based on engine precedence.
+
+      var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId),
+          inst = this;
+
+      var errHandler = function () {
+        if (inst._engineIndex < inst.enginePrecedence.length) {
+          inst._engineIndex++;
+          inst._chooseBackend();
+        } else {
+          throw new Error('No storage engine available; tried ' + inst.enginePrecedence.join(', ') + '.');
         }
-      }
+      };
 
-      if(!engine){
-        throw new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.');
-      }
+      when(engine.isAvailable(), function(res){
+        if(!res){
+          return errHandler();
+        }
+        inst.engine = engine;
 
+        /*
+        if(engine.init){
+          engine.init(inst.successHandler, inst.errorHandler);
+        } else {
+          inst.successHandler(inst);
+        }
+        */
+
+        inst.data = [];
+        if (inst.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
+          inst.applyData(inst.options.data);
+        } else {
+          inst._loadData().then(function () {
+            inst.successHandler && inst.successHandler(inst);
+          }, function (err) {
+            inst.errorHandler && inst.errorHandler(err);
+          });
+        }
+
+
+      }, errHandler);
 
     },
 

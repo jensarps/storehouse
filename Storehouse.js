@@ -28,6 +28,7 @@ define([
       for (var i in options) {
         this[i] = options[i];
       }
+      this.options = options;
 
       if (Object.prototype.toString.call(this.enginePrecedence) != '[object Array]') {
         this.enginePrecedence = [
@@ -72,6 +73,10 @@ define([
     //  successHandler: Function
     //    A handler to be called if initialization of the store succeeded.
     successHandler: null,
+
+    //  options: Object
+    //    The options object passed to the constructor
+    options: null,
 
     _chooseBackend: function () {
       //  summary:

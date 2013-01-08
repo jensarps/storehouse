@@ -163,17 +163,23 @@ define([
       //		The identity to use to delete the object
 
       var index = this.index,
-          data = this.data;
+          data = this.data,
+          deferred = new Deferred(),
+          inst = this;
+
       if (id in index) {
-
-        this.engine.remove(id);
-
-        data.splice(index[id], 1);
-
-        this._indexData();
-
-        return true;
+        when(this.engine.remove(id), function(){
+          data.splice(index[id], 1);
+          inst._indexData();
+          deferred.resolve(true);
+        }, function(err){
+          deferred.reject(err)
+        });
+      } else {
+        deferred.reject(new Error('Cannot remove item: No id was provided.'));
       }
+
+      return deferred.promise;
     },
 
     applyData: function (data) {

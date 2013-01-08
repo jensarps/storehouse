@@ -36,7 +36,7 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
 
     getAll: function () {
       var data = [];
-      for(var key in this._store){
+      for (var key in this._store) {
         data.push(this._store[key]);
       }
       return data;
@@ -47,7 +47,7 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
     },
 
     readStoreFromCookie: function () {
-      this._store = JSON.parse(cookie(this.cookieName) || '({})');
+      this._store = JSON.parse(cookie(this.cookieName) || '{}');
     }
   };
 

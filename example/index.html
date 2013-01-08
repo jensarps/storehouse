@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Storehouse example</title>
+</head>
+<body>
+<script>
+  var dojoConfig = {
+    packages: [
+      { name: "storehouse", location: "../storehouse" }
+    ]
+  };
+</script>
+<script src="../../dojo/dojo.js" data-dojo-config="async: true"></script>
+<script>
+  require(['storehouse/Storehouse', "dojo/Deferred"], function (Storehouse, Deferred) {
+    var store;
+
+    store = new Storehouse({
+      successHandler: onStoreReady
+    });
+
+    function onStoreReady(store){
+      console.log('store is ready');
+
+      var data = {
+        id: 1,
+        str: 'foo'
+      };
+
+      store.put(data).then(function () {
+        var item = store.get(1);
+        console.log(item);
+      });
+    }
+
+  });
+</script>
+</body>
+</html>

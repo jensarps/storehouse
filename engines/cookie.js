@@ -14,6 +14,10 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
 
     _store: null,
 
+    isAvailable: function () {
+      return cookie.isSupported();
+    },
+
     init: function () {
       this.cookieName = this.storeId + '-cookie';
       this.readStoreFromCookie();

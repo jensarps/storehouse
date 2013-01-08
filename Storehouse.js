@@ -22,6 +22,9 @@ define([
       //		Creates a locally persistent object store.
       // options: kwArgs?
       //		This provides any configuration information that will be mixed into the store.
+
+
+      options = options || {};
       for (var i in options) {
         this[i] = options[i];
       }

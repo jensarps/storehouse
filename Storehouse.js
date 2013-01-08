@@ -113,7 +113,9 @@ define([
 
       var data = this.data,
           index = this.index,
-          idProperty = this.idProperty;
+          idProperty = this.idProperty,
+          deferred = new Deferred();
+
       var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
 
       var exists = id in index;
@@ -121,22 +123,34 @@ define([
       if (id in index) {
         // object exists
         if (options && options.overwrite === false) {
-          throw new Error('Object already exists');
+          deferred.reject(new Error('Object already exists'));
         }
 
         // persist data
-        this.engine.put(id, object);
+        when(this.engine.put(id, object), function (res) {
 
-        // replace the entry in data
-        data[index[id]] = object;
+          // replace the entry in data
+          data[index[id]] = object;
+
+          deferred.resolve(id);
+        }, function (err) {
+          deferred.reject(err);
+        });
+
       } else {
         // persist data
-        this.engine.put(id, object);
+        when(this.engine.put(id, object), function (res) {
 
-        // add the new object
-        index[id] = data.push(object) - 1;
+          // add the new object
+          index[id] = data.push(object) - 1;
+
+          deferred.resolve(id);
+        }, function (err) {
+          deferred.reject(err);
+        });
       }
-      return id;
+
+      return deferred.promise;
     },
 
     remove: function (id) {

@@ -172,8 +172,17 @@ define([
     _loadData: function () {
       // 	summary:
       //		Loads available data from storage backend.
-      this.data = this.engine.getAll();
-      this._indexData();
+      var deferred = new Deferred(),
+          inst = this;
+
+      when(this.engine.getAll(), function(data){
+        inst.data = data;
+        inst._indexData();
+        deferred.resolve(true);
+      }, function(err){
+        deferred.reject(err);
+      });
+      return deferred.promise;
     },
 
     _indexData: function () {

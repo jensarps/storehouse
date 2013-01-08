@@ -78,7 +78,7 @@ define([
       //    Chooses a backend, based on engine precedence.  
       var engine;
       for(var i= 0, m=this.enginePrecedence.length; i<m; i++){
-        if(true){ // check availability
+        if(true){ // TODO: check availability
           engine = this.enginePrecedence[i];
           break;
         }

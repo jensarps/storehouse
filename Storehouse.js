@@ -187,14 +187,27 @@ define([
       //    Clears storage backend and sets data.
       //  data: Array
       //    The data to set.
-      this.engine.clear();
-      this.index = {};
-      this.data = [];
-      
-      for (var i = 0, m = data.length; i < m; i++) {
-        this.put(data[i]);
-      }
-      this._indexData();
+      var deferred = new Deferred(),
+          inst = this;
+
+      // TODO: add apply() method to engine
+
+      when(this.engine.clear(), function(){
+        inst.index = {};
+        inst.data = [];
+
+        for (var i = 0, m = data.length; i < m; i++) {
+          inst.put(data[i]);
+        }
+
+        inst._indexData();
+
+        deferred.resolve(true);
+      }, function(err){
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
     },
 
     _loadData: function () {

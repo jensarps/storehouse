@@ -57,6 +57,14 @@ define([
     //    An array of storage engines to be used, preferred engines first
     enginePrecedence: null,
 
+    //  errorHandler: Function
+    //    A handler to be called if initialization of the store failed.
+    errorHandler: null,
+
+    //  successHandler: Function
+    //    A handler to be called if initialization of the store succeeded.
+    successHandler: null,
+
     _chooseBackend: function () {
       //  summary:
       //    Chooses a backend, based on engine precedence.  

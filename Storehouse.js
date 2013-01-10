@@ -2,6 +2,7 @@ define([
   'dojo/_base/declare',
   'dojo/Deferred',
   'dojo/when',
+  'dojo/_base/lang',
 
   'storehouse/engines/cookie',
   'storehouse/engines/indexeddb',
@@ -9,7 +10,7 @@ define([
   'storehouse/engines/sqlite',
 
   'dojo/store/Memory' /*=====, './api/Store' =====*/
-], function (declare, Deferred, when, CookieEngine, IDBEngine, LSEngine, SqliteEngine, Memory /*=====, Store =====*/) {
+], function (declare, Deferred, when, lang, CookieEngine, IDBEngine, LSEngine, SqliteEngine, Memory /*=====, Store =====*/) {
 
 
   return declare('Storehouse', Memory, {

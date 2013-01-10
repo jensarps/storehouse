@@ -15,7 +15,16 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
     _store: null,
 
     isAvailable: function () {
-      return cookie.isSupported();
+      //  summary:
+      //    Checks if the given engine is supported and returns false if not
+      //    and true if it is upported _and_ ready to be used.
+      //  NOTE: This process may be async, and a promise might be returned as
+      //    well.
+      var supported = cookie.isSupported();
+      if (supported) {
+        this.init();
+      }
+      return supported;
     },
 
     init: function () {

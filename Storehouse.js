@@ -84,46 +84,41 @@ define([
       //  summary:
       //    Chooses a backend, based on engine precedence.
 
-      var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId),
-          inst = this;
+      var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId);
 
-      var errHandler = function () {
-        inst._engineIndex++;
-        if (inst._engineIndex < inst.enginePrecedence.length) {
-          inst._chooseBackend();
+      var errHandler = lang.hitch(this, function () {
+        this._engineIndex++;
+        if (this._engineIndex < this.enginePrecedence.length) {
+          this._chooseBackend();
         } else {
-          throw new Error('No storage engine available; tried ' + inst.enginePrecedence.join(', ') + '.');
+          throw new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.');
         }
-      };
-
-      when(engine.isAvailable(), function(res){
-        if(!res){
+      });
+      var successHandler = lang.hitch(this, function (res) {
+        if (!res) {
           return errHandler();
         }
-        inst.engine = engine;
+        this.engine = engine;
+        this._onEngineReady();
+      });
 
-        /*
-        if(engine.init){
-          engine.init(inst.successHandler, inst.errorHandler);
-        } else {
-          inst.successHandler(inst);
-        }
-        */
+      when(engine.isAvailable(), successHandler, errHandler);
 
-        // TODO: This is pretty ugly _and_ needs to wait for the engine to be ready
-        inst.data = [];
-        if (inst.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
-          inst.applyData(inst.options.data);
-        } else {
-          inst._loadData().then(function () {
-            inst.successHandler && inst.successHandler(inst);
-          }, function (err) {
-            inst.errorHandler && inst.errorHandler(err);
-          });
-        }
+    },
 
-      }, errHandler);
+    _onEngineReady: function () {
+      this.data = [];
 
+      if (this.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
+        this.applyData(this.options.data);
+      } else {
+        var inst = this;
+        this._loadData().then(function () {
+          inst.successHandler && inst.successHandler();
+        }, function (err) {
+          inst.errorHandler && inst.errorHandler(err);
+        });
+      }
     },
 
     put: function (object, options) {

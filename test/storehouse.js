@@ -75,46 +75,97 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
               t.is(store.query({even: true}, {start: 1, count: 1})[0].name, "four");
             },
             function testPutUpdate (t) {
+              var def = new doh.Deferred();
               var four = store.get(4);
               four.square = true;
-              store.put(four);
-              four = store.get(4);
-              t.t(four.square);
+              store.put(four).then(function(){
+                four = store.get(4);
+                if(four.square === true){
+                  def.callback(true);
+                } else {
+                  def.errback();
+                }
+              }, function(err){
+                def.errback(err);
+              });
+              return def;
             },
             function testPutNew (t) {
+              var def = new doh.Deferred();
               store.put({
                 id: 6,
                 perfect: true
+              }).then(function(){
+                if(store.get(6).perfect){
+                  def.callback(true);
+                } else {
+                  def.errback();
+                }
+              }, function(err){
+                def.errback(err);
               });
-              t.t(store.get(6).perfect);
+              return def;
             },
             function testAddDuplicate (t) {
-              var threw;
-              try {
-                store.add({
-                  id: 6,
-                  perfect: true
-                });
-              } catch (e) {
-                threw = true;
-              }
-              t.t(threw);
+              var def = new doh.Deferred();
+              store.add({
+                id: 6,
+                perfect: true
+              }).then(function(){
+                  def.errback();
+                }, function(err){
+                  def.callback();
+              });
+              return def;
             },
             function testAddNew (t) {
+              var def = new doh.Deferred();
               store.add({
                 id: 7,
                 prime: true
+              }).then(function(){
+                if(store.get(7).prime){
+                  def.callback(true);
+                } else {
+                  def.errback();
+                }
+              }, function(err){
+                  def.errback(err);
               });
-              t.t(store.get(7).prime);
+              return def;
             },
             function testRemove (t) {
-              t.t(store.remove(7));
-              t.is(store.get(7), undefined);
+              var def = new doh.Deferred();
+              store.remove(7).then(function(){
+                if(store.get(7) === undefined) {
+                  def.callback(true);
+                } else {
+                  def.errback();
+                }
+              }, function(err){
+                def.errback(err);
+              });
+              return def;
             },
             function testRemoveMissing (t) {
-              t.f(store.remove(77));
-              // make sure nothing changed
-              t.is(store.get(1).id, 1);
+              var def = new doh.Deferred();
+              store.remove(77).then(function(){
+
+                // make sure nothing changed
+                if (store.get(1).id === 1) {
+                  def.callback(true);
+                } else {
+                  def.errback();
+                }
+              }, function(){
+
+                // make sure nothing changed
+                if (store.get(1).id === 1) {
+                  def.callback(true);
+                } else {
+                  def.errback();
+                }
+              });
             },
             function testQueryAfterChanges (t) {
               t.is(store.query({prime: true}).length, 3);

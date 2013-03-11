@@ -111,7 +111,11 @@ define([
       var deferred = this._openDeferred;
 
       if (this.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
-        this.applyData(this.options.data);
+        this.applyData(this.options.data).then(function () {
+          deferred.resolve();
+        }, function (err) {
+          deferred.reject(err);
+        });
       } else {
         this._loadData().then(function () {
           deferred.resolve();

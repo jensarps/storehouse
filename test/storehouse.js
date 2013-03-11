@@ -4,6 +4,7 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
     var tests = doh;
     var testPersistence = false;
     var engines = [
+      'indexeddb',
       'localstorage',
       'cookie'
     ];
@@ -28,7 +29,18 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
         var store = new Storehouse(options);
 
         tests.register("storehouse-compliance-" + engine,
+
           [
+            function open (t) {
+              var def = new doh.Deferred();
+              store.open().then(function () {
+console.log('store opened for', engine);
+                def.callback(true);
+              }, function () {
+                def.errback();
+              });
+              return def;
+            },
             function testGet (t) {
               t.is(store.get(1).name, "one");
               t.is(store.get(4).name, "four");
@@ -78,14 +90,14 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
               var def = new doh.Deferred();
               var four = store.get(4);
               four.square = true;
-              store.put(four).then(function(){
+              store.put(four).then(function () {
                 four = store.get(4);
-                if(four.square === true){
+                if (four.square === true) {
                   def.callback(true);
                 } else {
                   def.errback();
                 }
-              }, function(err){
+              }, function (err) {
                 def.errback(err);
               });
               return def;
@@ -95,15 +107,15 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
               store.put({
                 id: 6,
                 perfect: true
-              }).then(function(){
-                if(store.get(6).perfect){
-                  def.callback(true);
-                } else {
-                  def.errback();
-                }
-              }, function(err){
-                def.errback(err);
-              });
+              }).then(function () {
+                  if (store.get(6).perfect) {
+                    def.callback(true);
+                  } else {
+                    def.errback();
+                  }
+                }, function (err) {
+                  def.errback(err);
+                });
               return def;
             },
             function testAddDuplicate (t) {
@@ -111,11 +123,11 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
               store.add({
                 id: 6,
                 perfect: true
-              }).then(function(){
+              }).then(function () {
                   def.errback();
-                }, function(err){
+                }, function (err) {
                   def.callback();
-              });
+                });
               return def;
             },
             function testAddNew (t) {
@@ -123,33 +135,33 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
               store.add({
                 id: 7,
                 prime: true
-              }).then(function(){
-                if(store.get(7).prime){
-                  def.callback(true);
-                } else {
-                  def.errback();
-                }
-              }, function(err){
+              }).then(function () {
+                  if (store.get(7).prime) {
+                    def.callback(true);
+                  } else {
+                    def.errback();
+                  }
+                }, function (err) {
                   def.errback(err);
-              });
+                });
               return def;
             },
             function testRemove (t) {
               var def = new doh.Deferred();
-              store.remove(7).then(function(){
-                if(store.get(7) === undefined) {
+              store.remove(7).then(function () {
+                if (store.get(7) === undefined) {
                   def.callback(true);
                 } else {
                   def.errback();
                 }
-              }, function(err){
+              }, function (err) {
                 def.errback(err);
               });
               return def;
             },
             function testRemoveMissing (t) {
               var def = new doh.Deferred();
-              store.remove(77).then(function(){
+              store.remove(77).then(function () {
 
                 // make sure nothing changed
                 if (store.get(1).id === 1) {
@@ -157,7 +169,7 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
                 } else {
                   def.errback();
                 }
-              }, function(){
+              }, function () {
 
                 // make sure nothing changed
                 if (store.get(1).id === 1) {
@@ -196,6 +208,8 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
               t.is(7, store.data.length);
             }
           ]
+
+
         );
 
 

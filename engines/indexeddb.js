@@ -153,8 +153,9 @@ function (Deferred, when, lang) {
           itemsLeft = dataSet.length;
       this.clear().then(lang.hitch(this, function () {
         for (var i = 0, m = dataSet.length; i < m; i++) {
-          var item = dataSet[i];
-          this.put(item).then(function(){
+          var item = dataSet[i],
+              id = item[this.idProperty];
+          this.put(id, item).then(function(){
             debugger;
             --itemsLeft || deferred.resolve();
           }, function(error){

@@ -52,8 +52,11 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
     apply: function (dataSet) {
       this._store = {};
       for (var i = 0, m = dataSet.length; i < m; i++){
-        this._store[key] = value;
+        var item = dataSet[i],
+            id = item[this.idProperty];
+        this._store[id] = item;
       }
+
       this.updateCookie();
     },
 

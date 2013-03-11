@@ -33,6 +33,7 @@ define([
 
       if (Object.prototype.toString.call(this.enginePrecedence) != '[object Array]') {
         this.enginePrecedence = [
+          'indexeddb',
           'localstorage',
           //'sqlite',
           'cookie'
@@ -41,6 +42,7 @@ define([
 
       // TODO: This is pretty ugly
       this.engines = {
+        indexeddb: IDBEngine,
         localstorage: LSEngine,
         sqlite: SqliteEngine,
         cookie: CookieEngine

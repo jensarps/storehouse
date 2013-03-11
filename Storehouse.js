@@ -80,7 +80,7 @@ define([
       //  summary:
       //    Chooses a backend, based on engine precedence.
 
-      var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId);
+      var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId, this.idProperty);
 
       var errHandler = lang.hitch(this, function () {
         this._engineIndex++;

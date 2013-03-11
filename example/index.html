@@ -13,10 +13,10 @@
 </script>
 <script src="../../dojo/dojo.js" data-dojo-config="async: true"></script>
 <script>
-  require(['storehouse/Storehouse', 'dojo/Deferred', 'dojo/when'], function (Storehouse, Deferred, when) {
+  require(['storehouse/Storehouse'], function (Storehouse) {
     var storeHouse = window._store =  new Storehouse();
 
-    when(storeHouse.open(), function (){
+    storeHouse.open().then(function (){
       console.log('store is ready');
 
       var data = {

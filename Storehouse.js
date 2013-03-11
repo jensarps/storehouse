@@ -72,11 +72,12 @@ define([
     options: null,
 
     open: function () {
-      var deferred = new Deferred();
-      this._chooseBackend(deferred);
+      this._openDeferred = new Deferred();
+      this._chooseBackend();
+      return this._openDeferred.promise;
     },
 
-    _chooseBackend: function (deferred) {
+    _chooseBackend: function () {
       //  summary:
       //    Chooses a backend, based on engine precedence.
 
@@ -87,7 +88,7 @@ define([
         if (this._engineIndex < this.enginePrecedence.length) {
           this._chooseBackend();
         } else {
-          deferred.reject(new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.'));
+          this._openDeferred.reject(new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.'));
         }
       });
       var successHandler = lang.hitch(this, function (res) {
@@ -96,20 +97,20 @@ define([
         }
         this.engine = engine;
         this.engineName = this.enginePrecedence[this._engineIndex];
-        this._onEngineReady(deferred);
+        this._onEngineReady();
       });
 
       when(engine.isAvailable(), successHandler, errHandler);
 
     },
 
-    _onEngineReady: function (deferred) {
+    _onEngineReady: function () {
       this.data = [];
+      var deferred = this._openDeferred;
 
       if (this.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
         this.applyData(this.options.data);
       } else {
-        var inst = this;
         this._loadData().then(function () {
           deferred.resolve();
         }, function (err) {

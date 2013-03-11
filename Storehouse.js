@@ -46,7 +46,6 @@ define([
         cookie: CookieEngine
       };
 
-      this._chooseBackend();
     },
 
     //  storeId: String
@@ -68,19 +67,16 @@ define([
     //    An array of storage engines to be used, preferred engines first
     enginePrecedence: null,
 
-    //  errorHandler: Function
-    //    A handler to be called if initialization of the store failed.
-    errorHandler: null,
-
-    //  successHandler: Function
-    //    A handler to be called if initialization of the store succeeded.
-    successHandler: null,
-
     //  options: Object
     //    The options object passed to the constructor
     options: null,
 
-    _chooseBackend: function () {
+    open: function () {
+      var deferred = new Deferred();
+      this._chooseBackend(deferred);
+    },
+
+    _chooseBackend: function (deferred) {
       //  summary:
       //    Chooses a backend, based on engine precedence.
 
@@ -91,7 +87,7 @@ define([
         if (this._engineIndex < this.enginePrecedence.length) {
           this._chooseBackend();
         } else {
-          throw new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.');
+          deferred.reject(new Error('No storage engine available; tried ' + this.enginePrecedence.join(', ') + '.'));
         }
       });
       var successHandler = lang.hitch(this, function (res) {
@@ -99,14 +95,15 @@ define([
           return errHandler();
         }
         this.engine = engine;
-        this._onEngineReady();
+        this.engineName = this.enginePrecedence[this._engineIndex];
+        this._onEngineReady(deferred);
       });
 
       when(engine.isAvailable(), successHandler, errHandler);
 
     },
 
-    _onEngineReady: function () {
+    _onEngineReady: function (deferred) {
       this.data = [];
 
       if (this.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
@@ -114,9 +111,9 @@ define([
       } else {
         var inst = this;
         this._loadData().then(function () {
-          inst.successHandler && inst.successHandler();
+          deferred.resolve();
         }, function (err) {
-          inst.errorHandler && inst.errorHandler(err);
+          deferred.reject(err);
         });
       }
     },

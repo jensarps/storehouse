@@ -7,20 +7,16 @@
 <script>
   var dojoConfig = {
     packages: [
-      { name: "storehouse", location: "../storehouse" }
+      { name: 'storehouse', location: '../storehouse' }
     ]
   };
 </script>
 <script src="../../dojo/dojo.js" data-dojo-config="async: true"></script>
 <script>
-  require(['storehouse/Storehouse', "dojo/Deferred"], function (Storehouse, Deferred) {
-    var store;
+  require(['storehouse/Storehouse', 'dojo/Deferred', 'dojo/when'], function (Storehouse, Deferred, when) {
+    var storeHouse = window._store =  new Storehouse();
 
-    store = new Storehouse({
-      successHandler: onStoreReady
-    });
-
-    function onStoreReady(store){
+    when(storeHouse.open(), function (){
       console.log('store is ready');
 
       var data = {
@@ -28,11 +24,11 @@
         str: 'foo'
       };
 
-      store.put(data).then(function () {
-        var item = store.get(1);
+      storeHouse.put(data).then(function () {
+        var item = storeHouse.get(1);
         console.log(item);
       });
-    }
+    });
 
   });
 </script>

@@ -208,16 +208,9 @@ define([
       var deferred = new Deferred(),
           inst = this;
 
-      // TODO: add apply() method to engine
-
-      when(this.engine.clear(), function(){
+      when(this.engine.apply(data), function(){
         inst.index = {};
-        inst.data = [];
-
-        for (var i = 0, m = data.length; i < m; i++) {
-          inst.put(data[i]);
-        }
-
+        inst.data = data;
         inst._indexData();
 
         deferred.resolve(true);

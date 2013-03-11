@@ -1,7 +1,8 @@
 define(['dojo/json'], function (JSON) {
 
-  var engine = function (storeId) {
+  var engine = function (storeId, idProperty) {
     this.storeId = storeId;
+    this.idProperty = idProperty;
   };
 
   engine.prototype = {
@@ -38,6 +39,15 @@ define(['dojo/json'], function (JSON) {
         }
       }
       return data;
+    },
+
+    apply: function (dataSet) {
+      this.clear();
+      for (var i = 0, m = dataSet.length; i < m; i++) {
+        var item = dataSet[i],
+            id = item[this.idProperty];
+        this.put(id, item);
+      }
     },
 
     prefixId: function (id) {

@@ -146,6 +146,25 @@ function (Deferred, when, lang) {
       cursorRequest.onError = function (error) {
         getAllDeferred.reject(error);
       };
+    },
+
+    apply: function (dataSet) {
+      var deferred = new Deferred(),
+          itemsLeft = dataSet.length;
+      this.clear().then(lang.hitch(this, function () {
+        for (var i = 0, m = dataSet.length; i < m; i++) {
+          var item = dataSet[i];
+          this.put(item).then(function(){
+            debugger;
+            --itemsLeft || deferred.resolve();
+          }, function(error){
+            deferred.reject(error);
+          });
+        }
+      }), function(error){
+        deferred.reject(error);
+      });
+      return deferred.promise;
     }
 
   };

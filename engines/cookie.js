@@ -55,6 +55,14 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
       return data;
     },
 
+    apply: function (dataSet) {
+      this._store = {};
+      for (var i = 0, m = dataSet.length; i < m; i++){
+        this._store[key] = value;
+      }
+      this.updateCookie();
+    },
+
     updateCookie: function () {
       cookie(this.cookieName, JSON.stringify(this._store), {expires: 100});
     },

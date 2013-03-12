@@ -133,7 +133,7 @@ define([
       // 	options: dojo.store.api.Store.PutDirectives??
       //		Additional metadata for storing the data.  Includes an 'id'
       //		property if a specific id is to be used.
-      //	returns: Number
+      //	returns: Promise
 
       var data = this.data,
           index = this.index,

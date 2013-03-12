@@ -4,16 +4,16 @@
   "licenses": [
      {
          "type": "AFLv2.1",
-         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
+         "url": "https://github.com/jensarps/storehouse/blob/master/LICENSE#L37"
      },
      {
          "type": "BSD",
-         "url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
+         "url": "https://github.com/jensarps/storehouse/blob/master/LICENSE#L7"
      }
   ],
   "keywords": ["Storage"],
   "dependencies": {
-    "dojo": "1.7.0"
+    "dojo": "1.8.0"
   },
   "main": "./Storehouse",
   "icon": "http://dojofoundation.org/images/icons/5.png"

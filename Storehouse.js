@@ -232,6 +232,12 @@ define([
       var deferred = new Deferred(),
           inst = this;
 
+      if(data.items){
+        // just for convenience with the data format IFRS expects
+        this.idProperty = data.identifier;
+        data = data.items;
+      }
+
       when(this.engine.apply(data), function(){
         inst.index = {};
         inst.data = data;

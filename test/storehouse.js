@@ -184,7 +184,7 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
             t.is(store.query({perfect: true}).length, 1);
           },
           function testIFRSStyleData (t) {
-            var anotherStore = new Memory({
+            var anotherStore = new Storehouse({
               data: {
                 items: [
                   {name: "one", prime: false},

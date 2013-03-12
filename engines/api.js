@@ -56,7 +56,7 @@ define([], function () {
 
     apply: function (data) {
       //  summary:
-      //    Clears the storage and puts the prpvided data in it. Must throw or
+      //    Clears the storage and puts the provided data in it. Must throw or
       //    reject if operation fails.
       //  data: Array
       //    An array of data objects.

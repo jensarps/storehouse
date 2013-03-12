@@ -184,6 +184,7 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
             t.is(store.query({perfect: true}).length, 1);
           },
           function testIFRSStyleData (t) {
+            var def = new doh.Deferred();
             var anotherStore = new Storehouse({
               data: {
                 items: [
@@ -192,10 +193,19 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
                   {name: "three", prime: true}
                 ],
                 identifier: "name"
-              }
+              },
+              storeId: 'ifrs',
+              enginePrecedence: [engine]
             });
-            t.is(anotherStore.get("one").name, "one");
-            t.is(anotherStore.query({name: "one"})[0].name, "one");
+            anotherStore.open().then(function(){
+              if (anotherStore.get("one").name == "one" &&
+                  anotherStore.query({name: "one"})[0].name == "one") {
+                def.callback(true);
+              }
+            }, function(error){
+              def.errback(error);
+            });
+            return def;
           },
           function testAddNewIdAssignment (t) {
             var object = {

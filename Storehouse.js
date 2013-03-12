@@ -4,14 +4,12 @@ define([
   'dojo/when',
   'dojo/_base/lang',
 
-  'storehouse/engines/cookie',
-  'storehouse/engines/indexeddb',
-  'storehouse/engines/localstorage',
-  'storehouse/engines/sqlite',
+  'storehouse/engines/registry',
+  'storehouse/engines/all',
 
   'dojo/store/Memory' /*=====, './api/Store' =====*/
 ], function (declare, Deferred, when, lang,
-             CookieEngine, IDBEngine, LSEngine, SqliteEngine,
+             registry, _,
              Memory /*=====, Store =====*/) {
 
   return declare('Storehouse', Memory, {
@@ -41,13 +39,7 @@ define([
         ];
       }
 
-      // TODO: This is pretty ugly
-      this.engines = {
-        indexeddb: IDBEngine,
-        localstorage: LSEngine,
-        sqlite: SqliteEngine,
-        cookie: CookieEngine
-      };
+      this.engines = registry.registeredEngines;
 
     },
 

@@ -1,7 +1,8 @@
 define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
 
-  var engine = function (storeId) {
+  var engine = function (storeId, idProperty) {
     this.storeId = storeId;
+    this.idProperty = idProperty;
     this._store = {};
   };
 
@@ -56,7 +57,6 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
             id = item[this.idProperty];
         this._store[id] = item;
       }
-
       this.updateCookie();
     },
 

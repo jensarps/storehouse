@@ -178,6 +178,22 @@ define([
       return deferred.promise;
     },
 
+    /*=====
+    add: function(object, options){
+   		// summary:
+   		//		Creates an object, throws an error if the object already exists
+   		// object: Object
+   		//		The object to store.
+   		// options: dojo/store/api/Store.PutDirectives?
+   		//		Additional metadata for storing the data.  Includes an "id"
+   		//		property if a specific id is to be used.
+   		// returns: Promise
+   		(options = options || {}).overwrite = false;
+   		// call put with overwrite being false
+   		return this.put(object, options);
+   	},
+   	=====*/
+
     remove: function (id) {
       // 	summary:
       //		Deletes an object by its identity

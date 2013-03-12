@@ -111,7 +111,10 @@ define([
       var deferred = this._openDeferred;
 
       if (this.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
-        this.setData(this.options.data).then(function () {
+        // cloning data here to make sure external refs can't screw up
+        // our internal representation.
+        var data = lang.clone(this.options.data);
+        this.applyData(data).then(function () {
           deferred.resolve();
         }, function (err) {
           deferred.reject(err);
@@ -220,11 +223,12 @@ define([
       return deferred.promise;
     },
 
-    setData: function (data) {
-   		// summary:
+    applyData: function (data) {
+   		//  summary:
    		//		Sets the given data as the source for this store, and indexes it
-   		// data: Object[]
+   		//  data: Object[]
    		//		An array of objects to use as the source of data.
+      //  returns: Promise
       var deferred = new Deferred(),
           inst = this;
 

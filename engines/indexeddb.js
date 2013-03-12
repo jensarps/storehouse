@@ -9,13 +9,14 @@ function (Deferred, when, lang) {
     this.storeId = storeId;
     this.idProperty = idProperty;
     this.idbFactory = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB;
+    this.dbName = 'storehouse-' + storeId;
   };
 
   engine.prototype = {
 
     db: null,
 
-    dbName: 'storehouse',
+    dbName: '',
 
     dbVersion: 1,
 

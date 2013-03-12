@@ -111,7 +111,7 @@ define([
       var deferred = this._openDeferred;
 
       if (this.options.data) { // Can't rely on this.data here, as Memory fools around w/ it
-        this.applyData(this.options.data).then(function () {
+        this.setData(this.options.data).then(function () {
           deferred.resolve();
         }, function (err) {
           deferred.reject(err);
@@ -220,11 +220,11 @@ define([
       return deferred.promise;
     },
 
-    applyData: function (data) {
-      //  summary:
-      //    Clears storage backend and sets data.
-      //  data: Array
-      //    The data to set.
+    setData: function (data) {
+   		// summary:
+   		//		Sets the given data as the source for this store, and indexes it
+   		// data: Object[]
+   		//		An array of objects to use as the source of data.
       var deferred = new Deferred(),
           inst = this;
 

@@ -156,7 +156,6 @@ function (Deferred, when, lang) {
           var item = dataSet[i],
               id = item[this.idProperty];
           this.put(id, item).then(function(){
-            debugger;
             --itemsLeft || deferred.resolve();
           }, function(error){
             deferred.reject(error);

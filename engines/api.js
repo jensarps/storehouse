@@ -1,12 +1,15 @@
 define([], function () {
 
-  var engine = function (storeId, idPrefix) {
+  var engine = function (storeId, idProperty) {
     this.storeId = storeId;
+    this.idProperty = idProperty;
   };
 
   engine.prototype = {
 
     storeId: '',
+
+    idProperty: '',
 
     isAvailable: function () {
       //  summary:

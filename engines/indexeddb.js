@@ -1,9 +1,8 @@
 define([
   'dojo/Deferred',
-  'dojo/when',
   'dojo/_base/lang'
 ],
-function (Deferred, when, lang) {
+function (Deferred, lang) {
 
   var engine = function (storeId, idProperty) {
     this.storeId = storeId;

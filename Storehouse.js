@@ -10,13 +10,14 @@ define([
   'storehouse/engines/sqlite',
 
   'dojo/store/Memory' /*=====, './api/Store' =====*/
-], function (declare, Deferred, when, lang, CookieEngine, IDBEngine, LSEngine, SqliteEngine, Memory /*=====, Store =====*/) {
-
+], function (declare, Deferred, when, lang,
+             CookieEngine, IDBEngine, LSEngine, SqliteEngine,
+             Memory /*=====, Store =====*/) {
 
   return declare('Storehouse', Memory, {
     // summary:
     //		This is a client-side persistent object store.
-    //		It implements most parts of the dojo.store.api.Store.
+    //		It implements dojo/store/api/Store.
 
     constructor: function (/*dojo.store.Memory*/ options) {
       // summary:
@@ -40,7 +41,6 @@ define([
         ];
       }
 
-      // TODO: This is pretty ugly
       this.engines = {
         indexeddb: IDBEngine,
         localstorage: LSEngine,
@@ -74,6 +74,9 @@ define([
     options: null,
 
     open: function () {
+      //  summary:
+      //    Opens the store.
+      //  returns: Promise
       this._openDeferred = new Deferred();
       this._chooseBackend();
       return this._openDeferred.promise;
@@ -107,6 +110,11 @@ define([
     },
 
     _onEngineReady: function () {
+      //  summary:
+      //    Called when an engine is available. Will load persisted data into
+      //    memory, or, if options.data is given, populate the backend.
+      //    If successful, will resolve the promise created during the open()
+      //    call.
       this.data = [];
       var deferred = this._openDeferred;
 

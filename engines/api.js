@@ -11,6 +11,8 @@ define([], function () {
 
     idProperty: '',
 
+    engineName: 'api',
+
     isAvailable: function () {
       //  summary:
       //    Checks if the given engine is supported and returns false if not

@@ -28,6 +28,8 @@ function (Deferred, when, lang) {
 
     storeId: '',
 
+    engineName: 'indexeddb',
+
     isAvailable: function () {
 
       var deferred = new Deferred();

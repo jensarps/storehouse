@@ -12,7 +12,11 @@ define(['dojo/json', 'dojo/cookie'], function (JSON, cookie) {
 
     storeId: '',
 
+    idProperty: '',
+
     _store: null,
+
+    engineName: 'cookie',
 
     isAvailable: function () {
       var supported = cookie.isSupported();

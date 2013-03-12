@@ -9,6 +9,10 @@ define(['dojo/json'], function (JSON) {
 
     storeId: '',
 
+    idProperty: '',
+
+    engineName: 'localstorage',
+
     isAvailable: function () {
       return ('localStorage' in window) && typeof localStorage.setItem != 'undefined';
     },

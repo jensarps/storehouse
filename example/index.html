@@ -1,44 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Storehouse example</title>
-</head>
-<body>
-<script>
-  var dojoConfig = {
-    packages: [
-      {
-        name: 'storehouse',
-        // We need to tell the dojo loader where Storehouse is.
-        // As we get dojo from a CDN, this looks a little tricky.
-        // When using a local version of dojo, we could use a relative
-        // URL like this:
-        //    location:  '../storehouse';
-        location: location.pathname.replace(/\/[^/]+$/, '') + '../'
-      }
-    ]
-  };
-</script>
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js" data-dojo-config="async: true"></script>
-<script>
-  require(['storehouse/Storehouse'], function (Storehouse) {
-    var storeHouse = window._store =  new Storehouse();
-
-    storeHouse.open().then(function (){
-      console.log('store is ready');
-
-      var data = {
-        id: 1,
-        str: 'foo'
-      };
-
-      storeHouse.put(data).then(function () {
-        var item = storeHouse.get(1);
-        console.log(item);
-      });
-    });
-
-  });
-</script>
-</body>
+	<head>
+		<title>Storehouse Examples</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div id="head">Storehouse Examples</div>
+		<div class="container">
+			<h1>Storehouse Examples</h1>
+			<p>
+				There are a couple of examples to try out / look at:
+			</p>
+			<ul>
+				<li><a href="basic/">Basic CRUD</a> - A basic CRUD example.</li>
+			</ul>
+		</div>
+	</body>
 </html>

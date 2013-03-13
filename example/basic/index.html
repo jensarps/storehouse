@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Storehouse Basic CRUD Example</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+  <script>
+    var dojoConfig = {
+      packages: [
+        {
+          name: 'storehouse',
+          // We need to tell the dojo loader where Storehouse is.
+          // As we get dojo from a CDN, this looks a little tricky.
+          // When using a local version of dojo, we could use a relative
+          // URL like this:
+          //    location:  '../../storehouse';
+          location: location.pathname.replace(/\/[^/]+$/, '') + '../..'
+        }
+      ]
+    };
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js" data-dojo-config="async: true"></script>
+</head>
+<body class="vbox">
+<div id="head">Storehouse Basic CRUD Example</div>
+<div class="hbox flex">
+  <div class="vbox flex" id="results-container">
+    QueryResults
+  </div>
+  <div class="vbox">
+    <div id="query"></div>
+    <div id="input">
+      <p>
+        Add a random customer:
+        <button onclick="app.addRandomCustomer()">Add random customer data
+        </button>
+      </p>
+      <p>
+        Or, enter customer data below:
+      </p>
+
+      <div><label>ID</label><input id="customerid"></div>
+      <div><label>First Name</label><input id="firstname"></div>
+      <div><label>Last Name</label><input id="lastname"></div>
+      <button id="submit">Enter data</button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>

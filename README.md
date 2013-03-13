@@ -25,14 +25,17 @@ Storehouse has the same API as the Memory Store has, with some differences, as S
 First, create a new instance:
 
 ```javascript
-var myStorehouse = new Storehouse(options);
+var myStorehouse = new Storehouse({
+  storeId: 'customers'
+});
 ```
 
 The options object is optional and may contain one or more of the following properties:
 
-* `storeId`
-* `idProperty`
-* `data`
+* `storeId`: The name of the store. Defaults to `'dojo-store'`. Though this is optional, it is highly advised to provide a specific id. If you, e.g. want to use two different stores, you **must** specify different store ids.
+* `idProperty`: The idProperty to use for this store. Defaults to `'id'`. Note that you cannot change the idProperty of an already existing store.
+* `data`: An array of data objects to populate the store with on startup.
+* `enginePreference`: An array of storage engines, in order of preference. Available engines are `'indexeddb'`, `'localstorage'` and `'cookie'`. Upon open, Storehouse will check each engine listed in the array if it is available in the current browser. When Storehouse finds an engine that can be used, it stops checking and goes with that engine. Be default, Storehouse uses the order as listed above.
 
 Before you can acutally work with it, you need to `open()` it. This will make Storehouse check for available storage backends, and prepare the chosen backend. The `open` method returns a promise, so you can use it's convenient `then` method:
 

@@ -8,7 +8,7 @@ Behind the covers, it uses IndexedDB as storage engine and falls back to localSt
 
 #Getting Storehouse
 
-Clone or download this repository and require 'storehouse' in your application.
+Clone or download this repository and require 'storehouse' in your application (for an example, please refer to the [examples section](https://github.com/jensarps/storehouse#examples)). Other ways to obtain Storehouse will follow.
 
 #How it works
 
@@ -34,7 +34,7 @@ The options object is optional and may contain one or more of the following prop
 
 * `storeId`: The name of the store. Defaults to `'dojo-store'`. Though this is optional, it is highly advised to provide a specific id. If you, e.g. want to use two different stores, you **must** specify different store ids.
 * `idProperty`: The idProperty to use for this store. Defaults to `'id'`. Note that you cannot change the idProperty of an already existing store.
-* `data`: An array of data objects to populate the store with on startup.
+* `data`: An array of data objects to populate the store with on startup. **WARNING**: *This will erase all previously stored data and replace the contents of the store with the given data.* This property only exists due to compatability resons, and most probably you will never want to use that.
 * `enginePreference`: An array of storage engines, in order of preference. Available engines are `'indexeddb'`, `'localstorage'` and `'cookie'`. Upon open, Storehouse will check each engine listed in the array if it is available in the current browser. When Storehouse finds an engine that can be used, it stops checking and goes with that engine. Be default, Storehouse uses the order as listed above.
 
 Before you can acutally work with it, you need to `open()` it. This will make Storehouse check for available storage backends, and prepare the chosen backend. The `open` method returns a promise, so you can use it's convenient `then` method:
@@ -177,7 +177,7 @@ Queries the store for objects.
 
 An array containing the results of the query, extended with iterative methods.
 
-####Example:
+####Example
 
 ```javascript
 // Given the following store:
@@ -198,5 +198,16 @@ var results = store.query({ prime: true });
 var results = store.query({ even: true });
 ```
 
----
+#Examples
+
+Examples are in the `example` folder.
+
+#Tests
+
+Tests are in the `test` directory. They require a D.O.H. runner.
+
+#License
+
+Storehouse is available under the terms of the modified BSD license or the Academic Free License version 2.1. For details, see the [LICENSE](https://github.com/jensarps/storehouse/blob/master/LICENSE) file.
+
 

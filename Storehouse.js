@@ -7,11 +7,10 @@ define([
   'storehouse/engines/cookie',
   'storehouse/engines/indexeddb',
   'storehouse/engines/localstorage',
-  'storehouse/engines/sqlite',
 
   'dojo/store/Memory' /*=====, './api/Store' =====*/
 ], function (declare, Deferred, when, lang,
-             CookieEngine, IDBEngine, LSEngine, SqliteEngine,
+             CookieEngine, IDBEngine, LSEngine,
              Memory /*=====, Store =====*/) {
 
   return declare('Storehouse', Memory, {
@@ -36,7 +35,6 @@ define([
         this.enginePrecedence = [
           'indexeddb',
           'localstorage',
-          //'sqlite',
           'cookie'
         ];
       }
@@ -44,7 +42,6 @@ define([
       this.engines = {
         indexeddb: IDBEngine,
         localstorage: LSEngine,
-        sqlite: SqliteEngine,
         cookie: CookieEngine
       };
 

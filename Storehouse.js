@@ -56,8 +56,12 @@ define([
     storeId: 'dojo-store',
 
     //  engine: Object
-    //		A pointer to the backend.
+    //		A pointer to the storage engine
     engine: null,
+
+    //  engineName: String
+    //    The name of the used engine
+    engineName: '',
 
     //  engines: Object
     //    A hashmap of available engines and their names

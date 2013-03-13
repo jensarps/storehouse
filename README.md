@@ -22,7 +22,7 @@ You might need to tell the Dojo loader where the Storehouse modules are; this is
 
 Storehouse has the same API as the Memory Store has, with some differences, as Storehouse uses storage backends that operate async, and it needs to take this into account.
 
-For usage details and a method overview, please refer to the Usage Doc.
+For usage details and a method overview, please refer to the [Usage Doc](https://github.com/jensarps/storehouse/blob/master/doc/usage.md).
 
 #Examples
 

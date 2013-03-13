@@ -24,10 +24,14 @@ define([
       // options: kwArgs?
       //		This provides any configuration information that will be mixed into the store.
 
-      // TODO: Don't mix in everything unchecked
-      options = options || {};
-      for (var i in options) {
-        this[i] = options[i];
+      if (typeof options != 'undefined') {
+        var allowedProperties = ['storeId', 'idProperty', 'data', 'enginePreference'];
+        for (var i = 0, m = allowedProperties.length; i < m; i++) {
+          var key = allowedProperties[i];
+          if (typeof options[key] != 'undefined') {
+            this[key] = options[key];
+          }
+        }
       }
       this.options = options;
 

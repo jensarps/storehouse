@@ -50,7 +50,7 @@ myStorehouse.open().then(function(){
 Of the [dojo/store API](http://dojotoolkit.org/reference-guide/1.8/dojo/store.html#api), Storehouse implements the following methods:
 
 
-###`get: function (id)`
+###`get(id)`
 
 ####Summary
 Retrieves an object by its identifier, returning the object.
@@ -71,7 +71,7 @@ var dataObject = myStorehouse.get(2);
 
 ---
 
-###`getIdentity: function(object)`
+###`getIdentity(object)`
 
 ####Summary
 Returns an object's identity.
@@ -91,7 +91,7 @@ var id = myStorehouse.getIdentity(someDataObject);
 ---
 	
 
-###`put: function (object, options)`
+###`put(object, options)`
 
 ####Summary
 Stores an object.
@@ -122,7 +122,7 @@ myStorehouse.put(dataObject).then(function(){
 
 ---
 
-###`add: function(object, options)`
+###`add(object, options)`
 
 ####Summary
 
@@ -137,6 +137,66 @@ Adds an object, throws an error if the object already exists
 ####Returns
 
 `add` returns a promise.
+
+---
+
+###`remove(id)`
+
+####Summary
+
+Deletes an object by its identity
+
+####Arguments
+
+* `id`: The id of the object to remove.
+
+####Returns
+
+`remove` returns a promise.
+
+####Example
+
+
+---
+
+###`query(query, options)`
+
+####Summary
+
+Queries the store for objects.
+
+####Arguments
+
+* `query`: The query to use for retrieving objects from the store.
+* `options`: The optional arguments to apply to the resultset. The options object may contain one or more of the following proerties:
+  * `start` - Starting offset
+  * `count` - Number of objects to return
+  * `sort` - This is an array of sort definitions, where each definition contains an attribute property indicating which property to sort on and a descending property indicating the direction of sort.
+
+####Returns
+
+An array containing the results of the query, extended with iterative methods.
+
+####Example:
+
+```javascript
+// Given the following store:
+var store = new Memory({
+  data: [
+    {id: 1, name: "one", prime: false },
+    {id: 2, name: "two", even: true, prime: true},
+    {id: 3, name: "three", prime: true},
+    {id: 4, name: "four", even: true, prime: false},
+    {id: 5, name: "five", prime: true}
+  ]
+});
+
+//	...find all items where "prime" is true:
+var results = store.query({ prime: true });
+
+//	...or find all items where "even" is true:
+var results = store.query({ even: true });
+```
 
 ---
 

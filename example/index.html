@@ -7,11 +7,19 @@
 <script>
   var dojoConfig = {
     packages: [
-      { name: 'storehouse', location: '../storehouse' }
+      {
+        name: 'storehouse',
+        // We need to tell the dojo loader where Storehouse is.
+        // As we get dojo from a CDN, this looks a little tricky.
+        // When using a local version of dojo, we could use a relative
+        // URL like this:
+        //    location:  '../storehouse';
+        location: location.pathname.replace(/\/[^/]+$/, '') + '../'
+      }
     ]
   };
 </script>
-<script src="../../dojo/dojo.js" data-dojo-config="async: true"></script>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js" data-dojo-config="async: true"></script>
 <script>
   require(['storehouse/Storehouse'], function (Storehouse) {
     var storeHouse = window._store =  new Storehouse();

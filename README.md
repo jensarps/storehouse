@@ -2,7 +2,7 @@
 
 Storehouse is a persistent data store for the Dojo Toolkit implementing the [dojo/store API](http://dojotoolkit.org/reference-guide/1.8/dojo/store.html).
 
-It's built open [dojo/store/Memory](http://dojotoolkit.org/reference-guide/1.8/dojo/store/Memory.html), so you have all the API you have with the Memory store, just that the data get's persisted client-side.
+It's built upon [dojo/store/Memory](http://dojotoolkit.org/reference-guide/1.8/dojo/store/Memory.html), so you have all the API you have with the Memory store, just that the data gets persisted client-side.
 
 Behind the covers, it uses IndexedDB as storage engine and falls back to localStorage if IndexedDB is not available – if that fails, too, it uses cookies as a last resort to store the data.
 
@@ -36,10 +36,10 @@ The options object is optional and may contain one or more of the following prop
 
 * `storeId`: The name of the store. Defaults to `'dojo-store'`. Though this is optional, it is highly advised to provide a specific id. If you, e.g. want to use two different stores, you **must** specify different store ids.
 * `idProperty`: The idProperty to use for this store. Defaults to `'id'`. Note that you cannot change the idProperty of an already existing store.
-* `data`: An array of data objects to populate the store with on startup. **WARNING**: *This will erase all previously stored data and replace the contents of the store with the given data.* This property only exists due to compatability resons, and most probably you will never want to use that.
+* `data`: An array of data objects to populate the store with on startup. **WARNING**: *This will erase all previously stored data and replace the contents of the store with the given data.* This property only exists due to compatibility reasons, and most probably you will never want to use that.
 * `enginePreference`: An array of storage engines, in order of preference. Available engines are `'indexeddb'`, `'localstorage'` and `'cookie'`. Upon open, Storehouse will check each engine listed in the array if it is available in the current browser. When Storehouse finds an engine that can be used, it stops checking and goes with that engine. Be default, Storehouse uses the order as listed above.
 
-Before you can acutally work with it, you need to `open()` it. This will make Storehouse check for available storage backends, and prepare the chosen backend. The `open` method returns a promise, so you can use it's convenient `then` method:
+Before you can actually work with it, you need to `open()` it. This will make Storehouse check for available storage backends, and prepare the chosen backend. The `open` method returns a promise, so you can use it's convenient `then` method:
 
 ```javascript
 myStorehouse.open().then(function(){
@@ -198,7 +198,7 @@ Queries the store for objects.
 ####Arguments
 
 * `query`: The query to use for retrieving objects from the store.
-* `options`: The optional arguments to apply to the resultset. The options object may contain one or more of the following proerties:
+* `options`: The optional arguments to apply to the resultset. The options object may contain one or more of the following properties:
   * `start` - Starting offset
   * `count` - Number of objects to return
   * `sort` - This is an array of sort definitions, where each definition contains an attribute property indicating which property to sort on and a descending property indicating the direction of sort.
@@ -239,5 +239,3 @@ Tests are in the `test` directory. They require a D.O.H. runner.
 #License
 
 Storehouse is available under the terms of the modified BSD license or the Academic Free License version 2.1. For details, see the [LICENSE](https://github.com/jensarps/storehouse/blob/master/LICENSE) file.
-
-

@@ -26,7 +26,7 @@ For usage details and a method overview, please refer to the [Usage Doc](https:/
 
 #Examples
 
-Examples are in the `example` folder.
+Examples are in the `example` folder. You can try them out directly in your browser [over here](http://jensarps.github.com/storehouse/example/).
 
 #Tests
 

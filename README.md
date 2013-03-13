@@ -47,6 +47,9 @@ myStorehouse.open().then(function(){
   console.log('ready!');
 });
 ```
+
+After the Storehouse instance has opened, you can find the name of the storage engine that is being used in the `engineName` property.
+
 ##Methods
 
 Of the [dojo/store API](http://dojotoolkit.org/reference-guide/1.8/dojo/store.html#api), Storehouse implements the following methods:

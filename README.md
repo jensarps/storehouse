@@ -185,7 +185,7 @@ var dataObject= {
 myStorehouse.remove(15).then(function(){
   // the object with id #15 is now deleted from the store
 });
-``
+```
 
 ---
 

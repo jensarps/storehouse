@@ -156,12 +156,6 @@ Deletes an object by its identity
 ####Example
 
 ```javascript
-var dataObject= {
-  id: 15,
-  name: 'John',
-  lastname: 'Doe',
-  age: '57'
-};
 myStorehouse.remove(15).then(function(){
   // the object with id #15 is now deleted from the store
 });

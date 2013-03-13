@@ -11,7 +11,7 @@
          "url": "https://github.com/jensarps/storehouse/blob/master/LICENSE#L7"
      }
   ],
-  "keywords": ["Storage"],
+  "keywords": ["Storage", "Offline"],
   "dependencies": {
     "dojo": "1.8.0"
   },

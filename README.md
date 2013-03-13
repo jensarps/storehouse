@@ -12,9 +12,9 @@ Clone or download this repository and require 'storehouse' in your application (
 
 #How it works
 
-Storehouse keeps a copy of the stored data in memory, allowing for fast, synchronous access and fast queries.
+Storehouse keeps a copy of the stored data in memory, allowing for fast, synchronous read access and queries.
 
-Only write operations are asynchronous (as the underlying engine might work asynchronously itself), and return Promises to make working with it as easy as possible.
+Only write operations are asynchronous (as the underlying engine might work asynchronously itself), and return Promises to make working with it as easy as possible. For more information on Promises, please refer to the [Dojo documentation](http://dojotoolkit.org/reference-guide/1.8/dojo/promise/Promise.html).
 
 #Usage
 

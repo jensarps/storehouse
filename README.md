@@ -6,15 +6,17 @@ It's built open [dojo/store/Memory](http://dojotoolkit.org/reference-guide/1.8/d
 
 Behind the covers, it uses IndexedDB as storage engine and falls back to localStorage if IndexedDB is not available – if that fails, too, it uses cookies as a last resort to store the data.
 
-#Getting Storehouse
-
-Clone or download this repository and require 'storehouse' in your application (for an example, please refer to the [examples section](https://github.com/jensarps/storehouse#examples)). Other ways to obtain Storehouse will follow.
-
 #How it works
 
 Storehouse keeps a copy of the stored data in memory, allowing for fast, synchronous read access and queries.
 
 Only write operations are asynchronous (as the underlying engine might work asynchronously itself), and return Promises to make working with it as easy as possible. For more information on Promises, please refer to the [Dojo documentation](http://dojotoolkit.org/reference-guide/1.8/dojo/promise/Promise.html).
+
+#Getting Storehouse
+
+Clone or download this repository and require 'Storehouse' in your application (for an example, please refer to the [examples section](https://github.com/jensarps/storehouse#examples)). Other ways to obtain Storehouse will follow.
+
+You might need to tell the Dojo loader where the Storehouse modules are; this is done via the `dojoConfig` config object. Please refer to the code in the examples to see some examples of this.
 
 #Usage
 

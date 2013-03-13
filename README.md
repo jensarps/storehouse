@@ -138,6 +138,20 @@ Adds an object, throws an error if the object already exists
 
 `add` returns a promise.
 
+####Example
+
+```javascript
+var dataObject= {
+  id: 15,
+  name: 'John',
+  lastname: 'Doe',
+  age: '57'
+};
+myStorehouse.add(dataObject).then(function(){
+  // the data now is stored and persisted
+});
+```
+
 ---
 
 ###`remove(id)`
@@ -156,6 +170,17 @@ Deletes an object by its identity
 
 ####Example
 
+```javascript
+var dataObject= {
+  id: 15,
+  name: 'John',
+  lastname: 'Doe',
+  age: '57'
+};
+myStorehouse.remove(15).then(function(){
+  // the object with id #15 is now deleted from the store
+});
+``
 
 ---
 

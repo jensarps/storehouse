@@ -89,7 +89,11 @@ define([
 
     _chooseBackend: function () {
       //  summary:
-      //    Chooses a backend, based on engine precedence.
+      //    Chooses a backend, based on engine precedence. Will call each
+      //    engine's isAvailable() method and call _onEngineReady() for
+      //    the first engine that reports availability.
+      //    Will reject the promise created during the open() call if no
+      //    engine was found.
 
       var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId, this.idProperty);
 
@@ -265,6 +269,14 @@ define([
     },
 
     ensureIdentity: function (object, options) {
+      // 	summary:
+      //		Checks if the given object has an id property and adds one if not.
+      // 	object: Object
+      //		The object to check.
+      // 	options: Object?
+      //    An optional object that may contain an `id` property.
+      //  returns:
+      //    The id found on / added to the object
       var idProperty = this.idProperty;
       return object[idProperty] = (options && 'id' in options) ? options.id :
         idProperty in object ? object[idProperty] :

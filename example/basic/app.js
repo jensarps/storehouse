@@ -46,6 +46,9 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 		['customerid','firstname','lastname'].forEach(function(key){
 			var value = nodeCache[key].value.trim();
 			if(value.length){
+        if(key == 'customerid'){
+          value = checkForNumericId(value);
+        }
 				data[key] = value;
 			}
 		});
@@ -62,12 +65,19 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 			nodeCache[id].value = '';
 		});
 	}
-	
-	function deleteItem(id){
-		customers.remove(id).then(refreshTable);
+
+  function checkForNumericId (id) {
+    var numericId = parseInt(id, 10);
+    return isNaN(numericId) ? id : numericId;
+  }
+
+  function deleteItem(id){
+    id = checkForNumericId(id);
+    customers.remove(id).then(refreshTable);
 	}
 	
 	function updateItem(id){
+    id = checkForNumericId(id);
 		var data = {
 			customerid: id,
 			firstname: document.getElementById('firstname_' + id).value.trim(),

@@ -221,10 +221,6 @@ define([
           deferred = new Deferred(),
           inst = this;
 
-      if (typeof id == 'undefined') {
-        deferred.reject(new Error('Cannot remove item: No id was provided.'));
-      }
-
       if (id in index) {
         when(this.engine.remove(id), function(){
           data.splice(index[id], 1);
@@ -234,7 +230,7 @@ define([
           deferred.reject(err)
         });
       } else {
-        deferred.reject(new Error('Cannot remove item: No object found with the given id.'));
+        deferred.reject(new Error('Cannot remove item: No id was provided or no object found with the given id.'));
       }
 
       return deferred.promise;

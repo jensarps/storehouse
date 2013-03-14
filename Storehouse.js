@@ -153,10 +153,9 @@ define([
 
       var data = this.data,
           index = this.index,
-          idProperty = this.idProperty,
           deferred = new Deferred();
 
-      var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : this._getInsertId();
+      var id = this.ensureIdentity(object, options);
 
       if (id in index) {
         // object exists
@@ -263,6 +262,11 @@ define([
       });
 
       return deferred.promise;
+    },
+
+    ensureIdentity: function (object, options) {
+      var idProperty = this.idProperty;
+      return object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : this._getInsertId();
     },
 
     _loadData: function () {

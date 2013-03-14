@@ -266,7 +266,9 @@ define([
 
     ensureIdentity: function (object, options) {
       var idProperty = this.idProperty;
-      return object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : this._getInsertId();
+      return object[idProperty] = (options && 'id' in options) ? options.id :
+        idProperty in object ? object[idProperty] :
+          this._getInsertId();
     },
 
     _loadData: function () {

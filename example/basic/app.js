@@ -1,7 +1,7 @@
 require(['storehouse/Storehouse'], function (Storehouse) {
 	
 	var tpls = {
-		row: '<tr><td>{customerid}</td><td><input id="lastname_{customerid}" value="{lastname}"></td><td><input id="firstname_{customerid}" value="{firstname}"></td><td><button onclick="app.deleteItem({customerid});">delete</button><button onclick="app.updateItem({customerid});">update</button></td></tr>',
+		row: '<tr><td>{customerid}</td><td><input id="lastname_{customerid}" value="{lastname}"></td><td><input id="firstname_{customerid}" value="{firstname}"></td><td><button onclick="app.deleteItem(\'{customerid}\');">delete</button><button onclick="app.updateItem(\'{customerid}\');">update</button></td></tr>',
 		table: '<table><tr><th>ID</th><th>Last Name</th><th>First Name</th><th></th></tr>{content}</table>'
 	};
 
@@ -46,9 +46,6 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 		['customerid','firstname','lastname'].forEach(function(key){
 			var value = nodeCache[key].value.trim();
 			if(value.length){
-				if(key == 'customerid'){ // We want the id to be numeric:
-					value = parseInt(value, 10);
-				}
 				data[key] = value;
 			}
 		});

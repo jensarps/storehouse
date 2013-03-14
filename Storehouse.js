@@ -78,6 +78,8 @@ define([
     //    The options object passed to the constructor
     options: null,
 
+    _insertId: 0,
+
     open: function () {
       //  summary:
       //    Opens the store.
@@ -251,6 +253,10 @@ define([
         data = data.items;
       }
 
+      for (var i = 0, m = data.length; i < m; i++) {
+        this.ensureIdentity(data[i]);
+      }
+
       when(this.engine.apply(data), function(){
         inst.index = {};
         inst.data = data;
@@ -307,7 +313,7 @@ define([
     },
 
     _getInsertId: function () {
-      var largest = 0;
+      var largest = this._insertId;
       for(var key in this.index){
         // no need for hasOwnProperty check
         var numeric = parseInt(key, 10) || 0;
@@ -315,7 +321,7 @@ define([
           largest = numeric;
         }
       }
-      return ++largest;
+      return this._insertId = ++largest;
     }
   });
 

@@ -156,8 +156,7 @@ define([
           idProperty = this.idProperty,
           deferred = new Deferred();
 
-      // TODO: Math.random() is a really bad thing to do as id generator
-      var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
+      var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : this._getInsertId();
 
       var exists = id in index;
 
@@ -293,6 +292,18 @@ define([
       for (var i = 0, l = data.length; i < l; i++) {
         this.index[data[i][this.idProperty]] = i;
       }
+    },
+
+    _getInsertId: function () {
+      var largest = 0;
+      for(var key in this.index){
+        // no need for hasOwnProperty check
+        var numeric = parseInt(key, 10) || 0;
+        if (numeric > largest) {
+          largest = numeric;
+        }
+      }
+      return ++largest;
     }
   });
 

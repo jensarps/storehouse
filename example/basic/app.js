@@ -83,8 +83,7 @@ require(['storehouse/Storehouse'], function (Storehouse) {
     var entry = {
       lastname: lastnames[Math.floor(Math.random()*5)],
       firstname: firstnames[Math.floor(Math.random()*4)],
-      age: Math.floor(Math.random() * (100 - 20)) + 20,
-      customerid: parseInt( ( "" + ( Date.now() * Math.random() ) ).substring(0, 6), 10)
+      age: Math.floor(Math.random() * (100 - 20)) + 20
     };
 
     return entry;

@@ -158,8 +158,6 @@ define([
 
       var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : this._getInsertId();
 
-      var exists = id in index;
-
       if (id in index) {
         // object exists
         if (options && options.overwrite === false) {

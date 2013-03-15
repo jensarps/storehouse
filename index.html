@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Storehouse</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+</head>
+
+<body>
+<a href="https://github.com/jensarps/storehouse"><img
+  style="position: absolute; top: 0; right: 0; border: 0;"
+  src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+  alt="Fork me on GitHub"/></a>
+
+<div id="container">
+
+<h1>
+  <a href="https://github.com/jensarps/storehouse">Storehouse</a>
+</h1>
+
+<div class="description">
+  A persistent data store implementing the dojo/store API
+</div>
+
+<h2>About</h2>
+
+<p>Storehouse is a persistent data store for the Dojo Toolkit implementing the
+  <a href="http://dojotoolkit.org/reference-guide/1.8/dojo/store.html" target="_blank">dojo/store
+    API</a>.</p>
+
+<p>It's built upon <a
+  href="http://dojotoolkit.org/reference-guide/1.8/dojo/store/Memory.html" target="_blank">dojo/store/Memory</a>,
+  so you have all the API you have with the Memory store, just that the data
+  gets persisted client-side.</p>
+
+<p>Behind the covers, it uses IndexedDB as storage engine and falls back to
+  localStorage if IndexedDB is not available – if that fails, too, it uses
+  cookies as a last resort to store the data.</p>
+
+<h2>How it works</h2>
+
+<p>Storehouse keeps a copy of the stored data in memory, allowing for fast,
+  synchronous read access and queries.</p>
+
+<p>Only write operations are asynchronous (as the underlying engine might work
+  asynchronously itself), and return Promises to make working with it as easy as
+  possible. For more information on Promises, please refer to the <a
+    href="http://dojotoolkit.org/reference-guide/1.8/dojo/promise/Promise.html" target="_blank">Dojo
+    documentation</a>.</p>
+
+<h2>Getting Storehouse</h2>
+
+<p>Clone or download this repository and require 'Storehouse' in your
+  application.
+  Other ways to obtain Storehouse will follow.</p>
+
+<p>You might need to tell the Dojo loader where the Storehouse modules are; this
+  is done via the <code>dojoConfig</code> config object. Please refer to the
+  code in the examples to see some examples of this.</p>
+
+<h2>Usage</h2>
+
+<p>
+  For usage details please refer to the project's <a href="https://github.com/jensarps/storehouse/blob/master/doc/usage.md">Usage Docs</a>.
+</p>
+
+<h2>Examples</h2>
+
+<p>
+  Examples are in the project's `example` folder. You can try them out directly in your browser <a href="http://jensarps.github.com/storehouse/example/">over here</a>.
+</p>
+
+<h2>License</h2>
+
+<p>Storehouse is available under the terms of the modified BSD license or the
+  Academic Free License version 2.1. For details, see the <a
+    href="https://github.com/jensarps/storehouse/blob/master/LICENSE">LICENSE</a>
+  file.</p>
+
+<h2>Dependencies</h2>
+
+<p>dojo 1.8</p>
+
+<h2>Author</h2>
+
+<p>Jens Arps</p>
+
+<h2>Contact</h2>
+
+<p>Ping me on Twitter: <a href="https://twitter.com/jensarps" target="_blank">@jensarps</a></p>
+
+</div>
+
+</body>
+
+</html>

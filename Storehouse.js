@@ -78,6 +78,8 @@ define([
     //    The options object passed to the constructor
     options: null,
 
+    _insertId: 0,
+
     open: function () {
       //  summary:
       //    Opens the store.
@@ -89,7 +91,11 @@ define([
 
     _chooseBackend: function () {
       //  summary:
-      //    Chooses a backend, based on engine precedence.
+      //    Chooses a backend, based on engine precedence. Will call each
+      //    engine's isAvailable() method and call _onEngineReady() for
+      //    the first engine that reports availability.
+      //    Will reject the promise created during the open() call if no
+      //    engine was found.
 
       var engine = new this.engines[this.enginePrecedence[this._engineIndex]](this.storeId, this.idProperty);
 
@@ -153,13 +159,9 @@ define([
 
       var data = this.data,
           index = this.index,
-          idProperty = this.idProperty,
           deferred = new Deferred();
 
-      // TODO: Math.random() is a really bad thing to do as id generator
-      var id = object[idProperty] = (options && 'id' in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
-
-      var exists = id in index;
+      var id = this.ensureIdentity(object, options);
 
       if (id in index) {
         // object exists
@@ -221,10 +223,6 @@ define([
           deferred = new Deferred(),
           inst = this;
 
-      if (typeof id == 'undefined') {
-        deferred.reject(new Error('Cannot remove item: No id was provided.'));
-      }
-
       if (id in index) {
         when(this.engine.remove(id), function(){
           data.splice(index[id], 1);
@@ -234,7 +232,7 @@ define([
           deferred.reject(err)
         });
       } else {
-        deferred.reject(new Error('Cannot remove item: No object found with the given id.'));
+        deferred.reject(new Error('Cannot remove item: No id was provided or no object found with the given id.'));
       }
 
       return deferred.promise;
@@ -255,6 +253,10 @@ define([
         data = data.items;
       }
 
+      for (var i = 0, m = data.length; i < m; i++) {
+        this.ensureIdentity(data[i]);
+      }
+
       when(this.engine.apply(data), function(){
         inst.index = {};
         inst.data = data;
@@ -266,6 +268,21 @@ define([
       });
 
       return deferred.promise;
+    },
+
+    ensureIdentity: function (object, options) {
+      // 	summary:
+      //		Checks if the given object has an id property and adds one if not.
+      // 	object: Object
+      //		The object to check.
+      // 	options: Object?
+      //    An optional object that may contain an `id` property.
+      //  returns:
+      //    The id found on / added to the object
+      var idProperty = this.idProperty;
+      return object[idProperty] = (options && 'id' in options) ? options.id :
+        idProperty in object ? object[idProperty] :
+          this._getInsertId();
     },
 
     _loadData: function () {
@@ -293,6 +310,18 @@ define([
       for (var i = 0, l = data.length; i < l; i++) {
         this.index[data[i][this.idProperty]] = i;
       }
+    },
+
+    _getInsertId: function () {
+      var largest = this._insertId;
+      for(var key in this.index){
+        // no need for hasOwnProperty check
+        var numeric = parseInt(key, 10) || 0;
+        if (numeric > largest) {
+          largest = numeric;
+        }
+      }
+      return this._insertId = ++largest;
     }
   });
 

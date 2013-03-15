@@ -1,7 +1,7 @@
 require(['storehouse/Storehouse'], function (Storehouse) {
 	
 	var tpls = {
-		row: '<tr><td>{customerid}</td><td><input id="lastname_{customerid}" value="{lastname}"></td><td><input id="firstname_{customerid}" value="{firstname}"></td><td><button onclick="app.deleteItem({customerid});">delete</button><button onclick="app.updateItem({customerid});">update</button></td></tr>',
+		row: '<tr><td>{customerid}</td><td><input id="lastname_{customerid}" value="{lastname}"></td><td><input id="firstname_{customerid}" value="{firstname}"></td><td><button onclick="app.deleteItem(\'{customerid}\');">delete</button><button onclick="app.updateItem(\'{customerid}\');">update</button></td></tr>',
 		table: '<table><tr><th>ID</th><th>Last Name</th><th>First Name</th><th></th></tr>{content}</table>'
 	};
 
@@ -46,9 +46,9 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 		['customerid','firstname','lastname'].forEach(function(key){
 			var value = nodeCache[key].value.trim();
 			if(value.length){
-				if(key == 'customerid'){ // We want the id to be numeric:
-					value = parseInt(value, 10);
-				}
+        if(key == 'customerid'){
+          value = checkForNumericId(value);
+        }
 				data[key] = value;
 			}
 		});
@@ -65,12 +65,19 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 			nodeCache[id].value = '';
 		});
 	}
-	
-	function deleteItem(id){
-		customers.remove(id).then(refreshTable);
+
+  function checkForNumericId (id) {
+    var numericId = parseInt(id, 10);
+    return isNaN(numericId) ? id : numericId;
+  }
+
+  function deleteItem(id){
+    id = checkForNumericId(id);
+    customers.remove(id).then(refreshTable);
 	}
 	
 	function updateItem(id){
+    id = checkForNumericId(id);
 		var data = {
 			customerid: id,
 			firstname: document.getElementById('firstname_' + id).value.trim(),
@@ -86,8 +93,7 @@ require(['storehouse/Storehouse'], function (Storehouse) {
     var entry = {
       lastname: lastnames[Math.floor(Math.random()*5)],
       firstname: firstnames[Math.floor(Math.random()*4)],
-      age: Math.floor(Math.random() * (100 - 20)) + 20,
-      customerid: parseInt( ( "" + ( Date.now() * Math.random() ) ).substring(0, 6), 10)
+      age: Math.floor(Math.random() * (100 - 20)) + 20
     };
 
     return entry;

@@ -80,16 +80,13 @@ function (Deferred, lang) {
     },
 
     remove: function (id) {
-      var deferred = new Deferred();
-      var deleteTransaction = this.db.transaction([this.storeId], 'readwrite');
-      var deleteRequest = deleteTransaction.objectStore(this.storeId)['delete'](id);
-      deleteRequest.onsuccess = function (event) {
-        deferred.resolve(event.target.result);
-      };
-      deleteRequest.onerror = function (error) {
-        deferred.reject(error);
-      };
-      return deferred.promise;
+      var handlerData = this._createHandlerDataObject(),
+          deleteTransaction = this.db.transaction([this.storeId], 'readwrite'),
+          deleteRequest = deleteTransaction.objectStore(this.storeId)['delete'](id);
+
+      this._connectTransaction(deleteTransaction, handlerData);
+      this._connectRequest(deleteRequest, handlerData);
+      return handlerData.deferred.promise;
     },
 
     clear: function () {

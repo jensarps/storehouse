@@ -100,26 +100,23 @@ function (Deferred, lang) {
     },
 
     getAll: function () {
-      var deferred = new Deferred();
+      var handlerData = this._createHandlerDataObject(),
+          getAllTransaction = this.db.transaction([this.storeId], 'readonly'),
+          store = getAllTransaction.objectStore(this.storeId);
 
-      var getAllTransaction = this.db.transaction([this.storeId], 'readonly');
-      var store = getAllTransaction.objectStore(this.storeId);
+      this._connectTransaction(getAllTransaction, handlerData);
+
       if (store.getAll) {
         var getAllRequest = store.getAll();
-        getAllRequest.onsuccess = function (event) {
-          deferred.resolve(event.target.result);
-        };
-        getAllRequest.onerror = function (error) {
-          deferred.reject(error);
-        };
+        this._connectRequest(getAllRequest, handlerData);
       } else {
-        this._getAllCursor(getAllTransaction, deferred);
+        this._getAllCursor(getAllTransaction, handlerData);
       }
 
-      return deferred.promise;
+      return handlerData.deferred.promise;
     },
 
-    _getAllCursor: function (tr, getAllDeferred) {
+    _getAllCursor: function (tr, handlerData) {
       var all = [];
       var store = tr.objectStore(this.storeId);
       var cursorRequest = store.openCursor();
@@ -131,12 +128,11 @@ function (Deferred, lang) {
           cursor['continue']();
         }
         else {
-          getAllDeferred.resolve(all);
+          handlerData.result = all;
+          handlerData.hasSuccess = true;
         }
       };
-      cursorRequest.onError = function (error) {
-        getAllDeferred.reject(error);
-      };
+      cursorRequest.onError = this._createErrorHandler(handlerData);
     },
 
     apply: function (dataSet) {

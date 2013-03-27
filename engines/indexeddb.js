@@ -165,6 +165,36 @@ function (Deferred, lang) {
         deferred.reject(error);
       });
       return deferred.promise;
+    },
+
+    _createHandlerDataObject: function () {
+      return {
+        result: null,
+        hasSuccess: false,
+        deferred: new Deferred()
+      };
+    },
+
+    _createErrorHandler: function (handlerData) {
+      return function (error) {
+        handlerData.deferred.reject(error);
+      };
+    },
+
+    _connectRequest: function (idbRequest, handlerData) {
+      idbRequest.onsuccess = function (event) {
+        handlerData.hasSuccess = true;
+        handlerData.result = event.target.result;
+      };
+      idbRequest.onerror = this._createErrorHandler(handlerData);
+    },
+
+    _connectTransaction: function (idbTransaction, handlerData) {
+      idbTransaction.onabort =
+      idbTransaction.onerror = this._createErrorHandler(handlerData);
+      idbTransaction.oncomplete = function () {
+        handlerData.deferred[handlerData.hasSuccess ? 'resolve' : 'reject'](handlerData.result);
+      }
     }
 
   };

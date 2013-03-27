@@ -70,16 +70,13 @@ function (Deferred, lang) {
     },
 
     put: function (id, object) {
-      var deferred = new Deferred();
-      var putTransaction = this.db.transaction([this.storeId], 'readwrite');
-      var putRequest = putTransaction.objectStore(this.storeId).put(object);
-      putRequest.onsuccess = function (event) {
-        deferred.resolve(event.target.result);
-      };
-      putRequest.onerror = function (error) {
-        deferred.reject(error);
-      };
-      return deferred.promise;
+      var handlerData = this._createHandlerDataObject(),
+          putTransaction = this.db.transaction([this.storeId], 'readwrite'),
+          putRequest = putTransaction.objectStore(this.storeId).put(object);
+
+      this._connectTransaction(putTransaction, handlerData);
+      this._connectRequest(putRequest, handlerData);
+      return handlerData.deferred.promise;
     },
 
     remove: function (id) {

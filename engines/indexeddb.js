@@ -90,16 +90,13 @@ function (Deferred, lang) {
     },
 
     clear: function () {
-      var deferred = new Deferred();
-      var clearTransaction = this.db.transaction([this.storeId], 'readwrite');
-      var clearRequest = clearTransaction.objectStore(this.storeId).clear();
-      clearRequest.onsuccess = function (event) {
-        deferred.resolve(event.target.result);
-      };
-      clearRequest.onerror = function (error) {
-        deferred.reject(error);
-      };
-      return deferred.promise;
+      var handlerData = this._createHandlerDataObject(),
+          clearTransaction = this.db.transaction([this.storeId], 'readwrite'),
+          clearRequest = clearTransaction.objectStore(this.storeId).clear();
+
+      this._connectTransaction(clearTransaction, handlerData);
+      this._connectRequest(clearRequest, handlerData);
+      return handlerData.deferred.promise;
     },
 
     getAll: function () {

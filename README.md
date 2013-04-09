@@ -32,6 +32,10 @@ Examples are in the `example` folder. You can try them out directly in your brow
 
 Tests are in the `test` directory. They require a D.O.H. runner.
 
+#Dependencies
+
+Storehouse requires Dojo 1.8+
+
 #License
 
 Storehouse is available under the terms of the modified BSD license or the Academic Free License version 2.1. For details, see the [LICENSE](https://github.com/jensarps/storehouse/blob/master/LICENSE) file.

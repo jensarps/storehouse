@@ -1,5 +1,6 @@
 {
   "name": "storehouse",
+  "version": "1.0.0",
   "description": "A persistent data store implementing the dojo/store API",
   "licenses": [
      {

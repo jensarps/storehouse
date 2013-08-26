@@ -1,4 +1,4 @@
-require(['storehouse/Storehouse'], function (Storehouse) {
+require(['storehouse/Storehouse', 'dojo/on'], function (Storehouse, on) {
 	
 	var tpls = {
 		row: '<tr><td>{customerid}</td><td><input id="lastname_{customerid}" value="{lastname}"></td><td><input id="firstname_{customerid}" value="{firstname}"></td><td><button onclick="app.deleteItem(\'{customerid}\');">delete</button><button onclick="app.updateItem(\'{customerid}\');">update</button></td></tr>',
@@ -18,12 +18,12 @@ require(['storehouse/Storehouse'], function (Storehouse) {
     customers.open().then(refreshTable);
 		
 		// create references for some nodes we have to work with
-		['submit', 'customerid', 'firstname', 'lastname', 'results-container'].forEach(function(id){
+        dojo.forEach(['customerid','firstname','lastname', 'submit'], function(id){
 			nodeCache[id] = document.getElementById(id);
 		});
 		
 		// and listen to the form's submit button.
-		nodeCache.submit.addEventListener('click', enterData);
+		on(nodeCache.submit, 'click', enterData);
 	}
 	
 	function refreshTable(){
@@ -43,8 +43,8 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 	function enterData(){
 		// read data from inputs…
 		var data = {};
-		['customerid','firstname','lastname'].forEach(function(key){
-			var value = nodeCache[key].value.trim();
+        dojo.forEach(['customerid','firstname','lastname'], function(key){
+			var value = dojo.trim(nodeCache[key].value);
 			if(value.length){
         if(key == 'customerid'){
           value = checkForNumericId(value);
@@ -61,7 +61,7 @@ require(['storehouse/Storehouse'], function (Storehouse) {
 	}
 	
 	function clearForm(){
-		['customerid','firstname','lastname'].forEach(function(id){
+		dojo.forEach(['customerid','firstname','lastname'], function(id){
 			nodeCache[id].value = '';
 		});
 	}

@@ -1,5 +1,5 @@
 require([
-  "dojo/ready", 'storehouse/Storehouse', "dijit/form/ComboBox", 'dojo/on'
+  'dojo/ready', 'storehouse/Storehouse', 'dijit/form/ComboBox', 'dojo/on'
 ], function (ready, Storehouse, ComboBox, on) {
 
   var places = new Storehouse({
@@ -28,11 +28,11 @@ require([
 
     // create a combobox widget
     comboBox = new ComboBox({
-      id: "placesSelect",
-      name: "placesSelect",
+      id: 'placesSelect',
+      name: 'placesSelect',
       store: places, // <-- use Storehouse as data store for this widget
-      searchAttr: "name"
-    }, "placesSelect");
+      searchAttr: 'name'
+    }, 'placesSelect');
 
     comboBox.on('change', displayCurrentItem);
   }
@@ -46,9 +46,9 @@ require([
     if (!places.data.length) {
       // if there is nothing in there, apply some default data and create the comboBox when done
       var data = [
-        { id: 1, name: "Rome", description: "A definitive must-see."},
-        { id: 2, name: "Venice", description: "Hard to find the spots without tourists where the students live, but worth it."},
-        { id: 3, name: "Florence", description: "A beautiful city, worth a trip even if you are not into museums."}
+        { id: 1, name: 'Rome', description: 'A definitive must-see.'},
+        { id: 2, name: 'Venice', description: 'Hard to find the spots without tourists where the students live, but worth it.'},
+        { id: 3, name: 'Florence', description: 'A beautiful city, worth a trip even if you are not into museums.'}
       ];
       places.applyData(data).then(createComboBox);
     } else {

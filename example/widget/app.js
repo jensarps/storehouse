@@ -1,6 +1,6 @@
 require([
-  "dojo/ready", 'storehouse/Storehouse', "dijit/form/ComboBox"
-], function(ready, Storehouse, ComboBox){
+  "dojo/ready", 'storehouse/Storehouse', "dijit/form/ComboBox", 'dojo/on'
+], function(ready, Storehouse, ComboBox, on){
 
   var places = new Storehouse({
     storeId: 'places'
@@ -13,12 +13,12 @@ require([
 	function init(){
 		
 		// create references for some nodes we have to work with
-		['submit', 'name', 'description'].forEach(function(id){
+        dojo.forEach(['submit', 'name', 'description'], function(id){
 			nodeCache[id] = document.getElementById(id);
 		});
 		
 		// and listen to the form's submit button.
-		nodeCache.submit.addEventListener('click', enterData);
+        on(nodeCache.submit, 'click', enterData);
 
     // open the store and call populateStore when ready
     places.open().then(populateStore);
@@ -60,8 +60,8 @@ require([
 	function enterData(){
 		// read data from inputs…
 		var data = {};
-		['name','description'].forEach(function(key){
-			var value = nodeCache[key].value.trim();
+		dojo.forEach(['name','description'], function(key){
+			var value = dojo.trim(nodeCache[key].value);
 			if(value.length){
 				data[key] = value;
 			}
@@ -76,7 +76,7 @@ require([
 	}
 	
 	function clearForm(){
-    ['name','description'].forEach(function(id){
+    dojo.forEach(['name','description'], function(id){
 			nodeCache[id].value = '';
 		});
 	}

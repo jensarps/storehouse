@@ -1,30 +1,30 @@
 require([
   "dojo/ready", 'storehouse/Storehouse', "dijit/form/ComboBox", 'dojo/on'
-], function(ready, Storehouse, ComboBox, on){
+], function (ready, Storehouse, ComboBox, on) {
 
   var places = new Storehouse({
     storeId: 'places'
   });
-	
-	var nodeCache = {};
+
+  var nodeCache = {};
 
   var comboBox;
-	
-	function init(){
-		
-		// create references for some nodes we have to work with
-        dojo.forEach(['submit', 'name', 'description'], function(id){
-			nodeCache[id] = document.getElementById(id);
-		});
-		
-		// and listen to the form's submit button.
-        on(nodeCache.submit, 'click', enterData);
+
+  function init () {
+
+    // create references for some nodes we have to work with
+    dojo.forEach(['submit', 'name', 'description'], function (id) {
+      nodeCache[id] = document.getElementById(id);
+    });
+
+    // and listen to the form's submit button.
+    on(nodeCache.submit, 'click', enterData);
 
     // open the store and call populateStore when ready
     places.open().then(populateStore);
-	}
+  }
 
-  function createComboBox(){
+  function createComboBox () {
 
     // create a combobox widget
     comboBox = new ComboBox({
@@ -37,13 +37,13 @@ require([
     comboBox.on('change', displayCurrentItem);
   }
 
-  function displayCurrentItem() {
+  function displayCurrentItem () {
     var currentItem = comboBox.item; // this is the item as it's found in the store
     alert(currentItem.name + ':\n\n' + currentItem.description);
   }
 
-  function populateStore(){
-    if(!places.data.length){
+  function populateStore () {
+    if (!places.data.length) {
       // if there is nothing in there, apply some default data and create the comboBox when done
       var data = [
         { id: 1, name: "Rome", description: "A definitive must-see."},
@@ -57,29 +57,29 @@ require([
     }
   }
 
-	function enterData(){
-		// read data from inputs…
-		var data = {};
-		dojo.forEach(['name','description'], function(key){
-			var value = dojo.trim(nodeCache[key].value);
-			if(value.length){
-				data[key] = value;
-			}
-		});
-		
-		// …and store it.
-		places.put(data).then(function(){
+  function enterData () {
+    // read data from inputs…
+    var data = {};
+    dojo.forEach(['name', 'description'], function (key) {
+      var value = dojo.trim(nodeCache[key].value);
+      if (value.length) {
+        data[key] = value;
+      }
+    });
+
+    // …and store it.
+    places.put(data).then(function () {
       clearForm();
       // Now, the item is already available in the comboBox!
       // Click the down arrow and you will see it's in the list.
-		});
-	}
-	
-	function clearForm(){
-    dojo.forEach(['name','description'], function(id){
-			nodeCache[id].value = '';
-		});
-	}
+    });
+  }
+
+  function clearForm () {
+    dojo.forEach(['name', 'description'], function (id) {
+      nodeCache[id].value = '';
+    });
+  }
 
   // go!
   ready(init);

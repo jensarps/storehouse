@@ -1,8 +1,8 @@
-require(['storehouse/Storehouse', 'dojo/on'], function (Storehouse, on) {
+require(['storehouse/Storehouse', 'dojo/on', 'dojo/html'], function (Storehouse, on, html) {
 
   var tpls = {
     row: '<tr><td>{customerid}</td><td><input id="lastname_{customerid}" value="{lastname}"></td><td><input id="firstname_{customerid}" value="{firstname}"></td><td><button onclick="app.deleteItem(\'{customerid}\');">delete</button><button onclick="app.updateItem(\'{customerid}\');">update</button></td></tr>',
-    table: '<table><tr><th>ID</th><th>Last Name</th><th>First Name</th><th></th></tr>{content}</table>'
+    table: '<table><tbody><tr><th>ID</th><th>Last Name</th><th>First Name</th><th></th></tr>{content}</table></tbody>'
   };
 
   var customers = new Storehouse({
@@ -18,7 +18,7 @@ require(['storehouse/Storehouse', 'dojo/on'], function (Storehouse, on) {
     customers.open().then(refreshTable);
 
     // create references for some nodes we have to work with
-    dojo.forEach(['customerid', 'firstname', 'lastname', 'submit'], function (id) {
+    dojo.forEach(['customerid', 'firstname', 'lastname', 'submit', 'results-container'], function (id) {
       nodeCache[id] = document.getElementById(id);
     });
 
@@ -32,12 +32,14 @@ require(['storehouse/Storehouse', 'dojo/on'], function (Storehouse, on) {
 
   function listItems (data) {
     var content = '';
-    data.forEach(function (item) {
+    dojo.forEach(data, function (item) {
       content += tpls.row.replace(/\{([^\}]+)\}/g, function (_, key) {
         return item[key];
       });
     });
-    nodeCache['results-container'].innerHTML = tpls.table.replace('{content}', content);
+
+    var node = dojo.byId('results-container');
+    html.set(node, content);
   }
 
   function enterData () {
@@ -80,8 +82,8 @@ require(['storehouse/Storehouse', 'dojo/on'], function (Storehouse, on) {
     id = checkForNumericId(id);
     var data = {
       customerid: id,
-      firstname: document.getElementById('firstname_' + id).value.trim(),
-      lastname: document.getElementById('lastname_' + id).value.trim()
+      firstname: dojo.trim(document.getElementById('firstname_' + id).value),
+      lastname: dojo.trim(document.getElementById('lastname_' + id).value)
     };
     customers.put(data).then(refreshTable);
   }
@@ -101,7 +103,6 @@ require(['storehouse/Storehouse', 'dojo/on'], function (Storehouse, on) {
 
   function addRandomCustomer () {
     var data = makeRandomEntry();
-
     customers.put(data).then(function () {
       clearForm();
       refreshTable();

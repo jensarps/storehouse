@@ -39,7 +39,7 @@ require(['storehouse/Storehouse', 'dojo/on', 'dojo/html'], function (Storehouse,
     });
 
     var node = dojo.byId('results-container');
-    html.set(node, content);
+    html.set(node, tpls.table.replace('{content}', content));
   }
 
   function enterData () {

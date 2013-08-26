@@ -29,6 +29,10 @@ function (Deferred, lang) {
 
     isAvailable: function () {
 
+      if (!this.idbFactory) {
+        return false;
+      }
+
       var deferred = new Deferred();
       var openRequest = this.idbFactory.open(this.dbName, this.dbVersion);
 

@@ -36,6 +36,23 @@ Tests are in the `test` directory. They require a D.O.H. runner.
 
 Storehouse requires Dojo 1.8+
 
+# Reporting Issues
+
+Bugs or enhancements can be filed by opening an issue in the [issue tracker on GitHub](https://github.com/jensarps/storehouse/issues).
+
+When reporting a bug, please provide the following information:
+
+* Affected browsers and Dojo versions
+* A clear list of steps to reproduce the problem
+* If the problem cannot be easily reproduced in an existing Storehouse test page,
+  include a [Gist](https://gist.github.com/) with code for a page containing a
+  reduced test case
+
+If you would like to suggest a fix for a particular issue, you are welcome to
+fork Storehouse, create a branch, and submit a pull request.  Please note that a
+[Dojo CLA](http://www.dojofoundation.org/about/cla) is required for any
+non-trivial modifications.
+
 #License
 
 Storehouse is available under the terms of the modified BSD license or the Academic Free License version 2.1. For details, see the [LICENSE](https://github.com/jensarps/storehouse/blob/master/LICENSE) file.

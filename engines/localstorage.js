@@ -10,7 +10,17 @@ define(['dojo/json'], function (JSON) {
     storeId: '',
 
     isAvailable: function () {
-      return ('localStorage' in window) && typeof localStorage.setItem != 'undefined';
+      var isAvailable = false;
+      try {
+        if('localStorage' in window && typeof localStorage.setItem != 'undefined') {
+          var key = "storehouse::availability",
+              value = ("" + Math.random()).substring(2,12);
+          localStorage.setItem(key, value);
+          isAvailable = localStorage.getItem(key) === value;
+          localStorage.removeItem(key);
+        }
+      } catch (e) {}
+      return isAvailable;
     },
 
     put: function (id, object) {

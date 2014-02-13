@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Storehouse Basic CRUD Example</title>
+  <link rel="stylesheet" type="text/css" href="../style.css">
+  <script>
+    var dojoConfig = {
+      packages: [
+        {
+          name: 'storehouse',
+          // We need to tell the dojo loader where Storehouse is.
+          // As we get dojo from a CDN, this looks a little tricky.
+          // When using a local version of dojo, we could use a relative
+          // URL like this:
+          //    location:  '../../storehouse';
+          location: location.pathname.replace(/\/[^/]+$/, '') + '../..'
+        }
+      ]
+    };
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js"
+          data-dojo-config="async: true"></script>
+</head>
+<body class="vbox">
+  <div id="head">Storehouse Observable Example
+    <span class="sourceLink">
+      <a href="https://github.com/jensarps/storehouse/tree/master/example/basic"
+         target="_blank">View Source on GitHub</a> /
+      <a href="../">Storehouse Examples</a> /
+      <a href="../../">Storehouse Home</a>
+    </span>
+  </div>
+  <div class="hbox flex">
+    <div class="vbox flex" id="results-container">
+      QueryResults
+    </div>
+    <div class="vbox">
+      <div id="query"></div>
+      <div id="input">
+        <p>
+          Using <a
+          href="https://dojotoolkit.org/reference-guide/1.9/dojo/store/Observable.html"
+          target="_blank">dojo/store/Observable</a>
+          with Storehouse allows to get notified for changes in query results. In
+          this example, we're monitoring changes to all customers with a last name
+          of "Miller".
+        </p>
+
+        <p>
+          Add a random customer:
+          <button onclick="app.addRandomCustomer()">Add random customer data
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="app.js"></script>
+</body>
+</html>

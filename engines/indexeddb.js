@@ -29,6 +29,10 @@ function (Deferred, lang) {
 
     isAvailable: function () {
 
+      if (!this.idbFactory) {
+        return false;
+      }
+
       var deferred = new Deferred();
       var openRequest = this.idbFactory.open(this.dbName, this.dbVersion);
 
@@ -70,65 +74,53 @@ function (Deferred, lang) {
     },
 
     put: function (id, object) {
-      var deferred = new Deferred();
-      var putTransaction = this.db.transaction([this.storeId], 'readwrite');
-      var putRequest = putTransaction.objectStore(this.storeId).put(object);
-      putRequest.onsuccess = function (event) {
-        deferred.resolve(event.target.result);
-      };
-      putRequest.onerror = function (error) {
-        deferred.reject(error);
-      };
-      return deferred.promise;
+      var handlerData = this._createHandlerDataObject(),
+          putTransaction = this.db.transaction([this.storeId], 'readwrite'),
+          putRequest = putTransaction.objectStore(this.storeId).put(object);
+
+      this._connectTransaction(putTransaction, handlerData);
+      this._connectRequest(putRequest, handlerData);
+      return handlerData.deferred.promise;
     },
 
     remove: function (id) {
-      var deferred = new Deferred();
-      var deleteTransaction = this.db.transaction([this.storeId], 'readwrite');
-      var deleteRequest = deleteTransaction.objectStore(this.storeId)['delete'](id);
-      deleteRequest.onsuccess = function (event) {
-        deferred.resolve(event.target.result);
-      };
-      deleteRequest.onerror = function (error) {
-        deferred.reject(error);
-      };
-      return deferred.promise;
+      var handlerData = this._createHandlerDataObject(),
+          deleteTransaction = this.db.transaction([this.storeId], 'readwrite'),
+          deleteRequest = deleteTransaction.objectStore(this.storeId)['delete'](id);
+
+      this._connectTransaction(deleteTransaction, handlerData);
+      this._connectRequest(deleteRequest, handlerData);
+      return handlerData.deferred.promise;
     },
 
     clear: function () {
-      var deferred = new Deferred();
-      var clearTransaction = this.db.transaction([this.storeId], 'readwrite');
-      var clearRequest = clearTransaction.objectStore(this.storeId).clear();
-      clearRequest.onsuccess = function (event) {
-        deferred.resolve(event.target.result);
-      };
-      clearRequest.onerror = function (error) {
-        deferred.reject(error);
-      };
-      return deferred.promise;
+      var handlerData = this._createHandlerDataObject(),
+          clearTransaction = this.db.transaction([this.storeId], 'readwrite'),
+          clearRequest = clearTransaction.objectStore(this.storeId).clear();
+
+      this._connectTransaction(clearTransaction, handlerData);
+      this._connectRequest(clearRequest, handlerData);
+      return handlerData.deferred.promise;
     },
 
     getAll: function () {
-      var deferred = new Deferred();
+      var handlerData = this._createHandlerDataObject(),
+          getAllTransaction = this.db.transaction([this.storeId], 'readonly'),
+          store = getAllTransaction.objectStore(this.storeId);
 
-      var getAllTransaction = this.db.transaction([this.storeId], 'readonly');
-      var store = getAllTransaction.objectStore(this.storeId);
+      this._connectTransaction(getAllTransaction, handlerData);
+
       if (store.getAll) {
         var getAllRequest = store.getAll();
-        getAllRequest.onsuccess = function (event) {
-          deferred.resolve(event.target.result);
-        };
-        getAllRequest.onerror = function (error) {
-          deferred.reject(error);
-        };
+        this._connectRequest(getAllRequest, handlerData);
       } else {
-        this._getAllCursor(getAllTransaction, deferred);
+        this._getAllCursor(getAllTransaction, handlerData);
       }
 
-      return deferred.promise;
+      return handlerData.deferred.promise;
     },
 
-    _getAllCursor: function (tr, getAllDeferred) {
+    _getAllCursor: function (tr, handlerData) {
       var all = [];
       var store = tr.objectStore(this.storeId);
       var cursorRequest = store.openCursor();
@@ -140,12 +132,11 @@ function (Deferred, lang) {
           cursor['continue']();
         }
         else {
-          getAllDeferred.resolve(all);
+          handlerData.result = all;
+          handlerData.hasSuccess = true;
         }
       };
-      cursorRequest.onError = function (error) {
-        getAllDeferred.reject(error);
-      };
+      cursorRequest.onError = this._createErrorHandler(handlerData);
     },
 
     apply: function (dataSet) {
@@ -165,6 +156,36 @@ function (Deferred, lang) {
         deferred.reject(error);
       });
       return deferred.promise;
+    },
+
+    _createHandlerDataObject: function () {
+      return {
+        result: null,
+        hasSuccess: false,
+        deferred: new Deferred()
+      };
+    },
+
+    _createErrorHandler: function (handlerData) {
+      return function (error) {
+        handlerData.deferred.reject(error);
+      };
+    },
+
+    _connectRequest: function (idbRequest, handlerData) {
+      idbRequest.onsuccess = function (event) {
+        handlerData.hasSuccess = true;
+        handlerData.result = event.target.result;
+      };
+      idbRequest.onerror = this._createErrorHandler(handlerData);
+    },
+
+    _connectTransaction: function (idbTransaction, handlerData) {
+      idbTransaction.onabort =
+      idbTransaction.onerror = this._createErrorHandler(handlerData);
+      idbTransaction.oncomplete = function () {
+        handlerData.deferred[handlerData.hasSuccess ? 'resolve' : 'reject'](handlerData.result);
+      }
     }
 
   };

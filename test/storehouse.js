@@ -48,7 +48,15 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
           },
           function testQuery (t) {
             t.is(store.query({prime: true}).length, 3);
-            t.is(store.query({even: true})[1].name, "four");
+            // order is not defined by query w/o sort
+            var data = store.query({even: true}, {sort: 'id'}),
+                result = false;
+
+            if (data[0].name == "four" || data[1].name == "four") {
+              result = true;
+            }
+
+            t.is(true, result);
           },
           function testQueryWithString (t) {
             t.is(store.query({name: "two"}).length, 1);
@@ -84,7 +92,7 @@ require(["dojo", "doh", "storehouse/Storehouse", "dojo/store/Memory"], function 
           },
           function testQueryWithPaging (t) {
             t.is(store.query({prime: true}, {start: 1, count: 1}).length, 1);
-            t.is(store.query({even: true}, {start: 1, count: 1})[0].name, "four");
+            t.is(store.query({even: true}, {start: 1, count: 1, sort: [ {attribute: 'id'} ]})[0].name, "four");
           },
           function testPutUpdate (t) {
             var def = new doh.Deferred();

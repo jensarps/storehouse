@@ -51,6 +51,10 @@ define([
 
     },
 
+    //  version: String
+    //    The version of Storehouse
+    version: "1.0.1",
+
     //  storeId: String
     //    An identifier for the local store, allows you to have distinct local stores by setting unique ids on each
     storeId: 'dojo-store',

@@ -25,7 +25,7 @@ define([
       //		This provides any configuration information that will be mixed into the store.
 
       if (typeof options != 'undefined') {
-        var allowedProperties = ['storeId', 'idProperty', 'data', 'enginePreference'];
+        var allowedProperties = ['storeId', 'idProperty', 'data', 'enginePrecedence'];
         for (var i = 0, m = allowedProperties.length; i < m; i++) {
           var key = allowedProperties[i];
           if (typeof options[key] != 'undefined') {
